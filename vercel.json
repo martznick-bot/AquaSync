@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/aquasync-v9.html"
+    }
+  ]
+}
