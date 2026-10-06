@@ -275,6 +275,16 @@
   .wl-msg.ok { color: var(--cyan); } .wl-msg.err { color: #ff8a8a; }
   .wl-fine { font-size: 0.8rem; color: var(--soft); opacity: 0.7; margin-top: 0.4rem; }
   @media (max-width: 560px) { .wl-form { grid-template-columns: 1fr; } .wl-form select { order: 2; } .wl-form .btn { order: 3; } }
+  .app-link { color: var(--cyan); margin-left: 0.4em; white-space: nowrap; }
+  .app-promo { background: linear-gradient(180deg, var(--deep), var(--navy)); }
+  .app-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 3rem; align-items: start; }
+  .app-grid .actions { margin: 1.75rem 0 1.5rem; }
+  .app-how { font-size: 0.9rem; }
+  .app-feats { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+  .app-feats li { padding: 1.1rem 0; border-bottom: 1px solid var(--line); }
+  .app-feats h3 { color: var(--cyan); margin: 0 0 0.4rem; }
+  .app-feats p { margin: 0; font-size: 0.92rem; }
+  @media (max-width: 820px) { .app-grid { grid-template-columns: 1fr; gap: 2rem; } }
   </style>
 </head>
 <body>
@@ -290,6 +300,7 @@
       <li><a href="#language">How it works</a></li>
       <li><a href="#progress">Progress</a></li>
       <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#app">App</a></li>
       <li><a class="contact-link" href="#contact">Contact</a></li>
     </ul>
   </div>
@@ -306,7 +317,7 @@
         <a class="btn btn-solid" href="#film">Watch the film</a>
         <a class="btn btn-ghost" href="#waitlist">Join the waitlist</a>
       </div>
-      <p class="badge">Patent pending. Prototype in development.</p>
+      <p class="badge">Patent pending. Prototype in development. <a class="app-link" href="#app">Get the companion app</a></p>
     </div>
   </header>
 
@@ -422,6 +433,27 @@
         <div class="version"><div class="tag">V3</div><h3>Fully integrated</h3><p>Haptics built directly into a purpose-made BCD, turning the diver's own body into the interface.</p></div>
         <div class="version"><div class="tag">V4</div><h3>Full-body AquaSync suit</h3><p>A complete wetsuit with haptics built in and bone-conduction audio for music and spoken cues. Connect over Bluetooth before the dive to upload your music and choose from thousands of other things to bring with you, then use the companion app to set up, review and share your dives.</p></div>
       </div>
+    </div>
+  </section>
+
+  <section class="app-promo" id="app">
+    <div class="wrap app-grid">
+      <div>
+        <h2>The companion <span class="cyan">app</span></h2>
+        <p>Pair your vest, check all eight haptic points before you get in, plan your dive and load your music, then replay what the vest told you once you're back on the boat.</p>
+        <div class="actions">
+          <a class="btn btn-solid" href="/app/">Get the app</a>
+          <a class="btn btn-ghost" href="/explore.html">Explore the app</a>
+        </div>
+        <p class="app-how"><strong>To install:</strong> open the app on your phone. On iPhone, tap Share, then Add to Home Screen. On Android, tap the menu, then Install app.</p>
+        <p class="note">Early preview with example data. It doesn't connect to a vest yet.</p>
+      </div>
+      <ul class="app-feats">
+        <li><h3>Zone check</h3><p>Pulse each of the eight points and confirm you feel it.</p></li>
+        <li><h3>Plan &amp; load</h3><p>Set depth, time and air alerts, and choose what to bring.</p></li>
+        <li><h3>Dive replay</h3><p>See every cue the vest gave you on your depth profile.</p></li>
+        <li><h3>Dive log</h3><p>Keep every dive, with alerts flagged.</p></li>
+      </ul>
     </div>
   </section>
 

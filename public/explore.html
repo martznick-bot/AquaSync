@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Explore the App | AquaSync</title>
+<meta name="description" content="Take a tour of the AquaSync companion app: pair your vest, check all eight haptic points, plan your dive and replay what the vest told you.">
+<meta name="theme-color" content="#02070D">
+<link rel="icon" type="image/png" href="/app/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Michroma&family=Sora:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #02070D; --navy: #041426; --deep: #072340; --cyan: #1FB6FF;
+    --ice: #E8F5FF; --soft: rgba(232, 245, 255, 0.74); --line: rgba(232, 245, 255, 0.14);
+    --display: "Michroma", "Eurostile", "Arial Black", sans-serif;
+    --body: "Sora", "Segoe UI", system-ui, sans-serif;
+    --wrap: 72rem;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: var(--black); color: var(--ice); font-family: var(--body); font-weight: 300; font-size: 1.0625rem; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .wrap { width: min(100% - 2.5rem, var(--wrap)); margin-inline: auto; }
+  p { margin: 0 0 1em; max-width: 60ch; color: var(--soft); }
+  h1, h2, h3, .wordmark, .tagline { font-family: var(--display); font-weight: 400; text-transform: uppercase; margin: 0; }
+  h1 { font-size: clamp(1.8rem, 5.5vw, 3.4rem); line-height: 1.15; letter-spacing: 0.1em; }
+  h2 { font-size: clamp(1.3rem, 3.5vw, 2.1rem); line-height: 1.25; letter-spacing: 0.12em; }
+  h3 { font-size: 0.85rem; line-height: 1.5; letter-spacing: 0.14em; }
+  .cyan { color: var(--cyan); }
+  .tagline { font-size: 0.78rem; letter-spacing: 0.42em; color: var(--soft); margin-bottom: 1.2rem; }
+  a { color: var(--cyan); }
+  :focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+  .nav { position: sticky; top: 0; z-index: 20; background: rgba(2,7,13,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); padding-top: env(safe-area-inset-top, 0px); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 4rem; gap: 1rem; }
+  .brand { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; color: var(--ice); min-width: 0; }
+  .brand img { width: 46px; height: auto; }
+  .wordmark { font-size: 0.95rem; letter-spacing: 0.32em; white-space: nowrap; }
+  .nav-cta { color: var(--cyan); font-weight: 600; font-size: 0.9rem; text-decoration: none; white-space: nowrap; }
+
+  .btn { display: inline-block; text-decoration: none; font-weight: 600; font-size: 0.95rem; padding: 0.9rem 1.5rem; border-radius: 999px; border: 1.5px solid var(--cyan); cursor: pointer; font-family: var(--body); transition: background 0.2s, box-shadow 0.2s; }
+  .btn-solid { background: var(--cyan); color: var(--black); }
+  .btn-solid:hover { box-shadow: 0 0 28px rgba(31, 182, 255, 0.55); }
+  .btn-ghost { color: var(--ice); background: none; }
+  .btn-ghost:hover { background: rgba(31, 182, 255, 0.12); }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.9rem; }
+
+  .intro { padding: clamp(3.5rem, 8vw, 6rem) 0 2rem; background: radial-gradient(ellipse 80% 70% at 70% 0%, rgba(31,182,255,0.14), transparent 70%); }
+  .intro .lede { font-size: 1.1rem; margin: 1.4rem 0 2rem; }
+
+  .tour { padding: 2rem 0 clamp(4rem, 9vw, 6.5rem); }
+  .tour-grid { display: grid; grid-template-columns: 390px minmax(0, 1fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+  .device { width: 100%; max-width: 390px; aspect-ratio: 390 / 800; border-radius: 44px; border: 10px solid #10232c; background: var(--black); box-shadow: 0 30px 80px rgba(0,0,0,0.55), 0 0 60px rgba(31,182,255,0.12); overflow: hidden; position: sticky; top: 5.5rem; }
+  .device iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .screens { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .screens li { border-bottom: 1px solid var(--line); }
+  .screens button { all: unset; box-sizing: border-box; display: grid; grid-template-columns: 2.6rem minmax(0,1fr); gap: 0.4rem 1rem; width: 100%; padding: 1.2rem 0.75rem; cursor: pointer; border-left: 2px solid transparent; }
+  .screens button:hover { background: rgba(31,182,255,0.06); }
+  .screens button[aria-pressed="true"] { border-left-color: var(--cyan); background: rgba(31,182,255,0.08); }
+  .screens button:focus-visible { outline: 2px solid var(--cyan); outline-offset: -2px; }
+  .screens .n { font-family: var(--display); font-size: 0.8rem; color: var(--cyan); padding-top: 0.15rem; }
+  .screens h3 { color: var(--ice); }
+  .screens p { grid-column: 2; margin: 0; font-size: 0.92rem; }
+  .tour-hint { font-size: 0.85rem; margin-top: 1.2rem; }
+
+  .points { padding: clamp(4rem, 9vw, 6.5rem) 0; background: linear-gradient(180deg, var(--deep), var(--navy)); }
+  .points-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 4rem); align-items: center; margin-top: 2.5rem; }
+  .vest img { width: 100%; height: auto; display: block; filter: drop-shadow(0 18px 40px rgba(0,0,0,0.45)); }
+  .vest-labels { display: grid; grid-template-columns: 1fr 1fr; text-align: center; margin-top: 0.8rem; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--soft); }
+  .pt-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0.2rem 1.5rem; }
+  .pt-list li { display: flex; gap: 0.8rem; align-items: baseline; padding: 0.55rem 0; border-bottom: 1px solid var(--line); font-size: 0.95rem; }
+  .pt-list b { font-family: var(--display); font-weight: 400; color: var(--cyan); font-size: 0.8rem; min-width: 1.2rem; }
+  .signals { margin-top: 1.8rem; font-size: 0.92rem; }
+  .signals p { margin: 0 0 0.5rem; }
+  .signals strong { color: var(--ice); font-weight: 600; }
+
+  .install { padding: clamp(4rem, 9vw, 6.5rem) 0; text-align: center; background: linear-gradient(180deg, var(--navy), var(--black)); }
+  .install h2, .install p { margin-inline: auto; }
+  .install .steps { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 46rem; margin: 2.5rem auto; text-align: left; }
+  .install .step { border: 1px solid var(--line); border-radius: 18px; padding: 1.4rem 1.5rem; }
+  .install .step h3 { color: var(--cyan); margin-bottom: 0.6rem; }
+  .install .step p { margin: 0; font-size: 0.95rem; }
+  .install .actions { justify-content: center; }
+  .note { font-size: 0.85rem; margin-top: 1.8rem; }
+
+  footer { border-top: 1px solid var(--line); padding: 2rem 0 calc(2rem + env(safe-area-inset-bottom, 0px)); font-size: 0.85rem; color: var(--soft); }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+
+  @media (max-width: 860px) {
+    .tour-grid, .points-grid { grid-template-columns: 1fr; }
+    .device { position: static; margin-inline: auto; }
+  }
+  @media (max-width: 560px) {
+    .install .steps, .pt-list { grid-template-columns: 1fr; }
+    .wordmark { font-size: 0.8rem; letter-spacing: 0.24em; }
+    .brand img { width: 38px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="AquaSync home">
+      <img src="/app/logo.png" alt="" width="46" height="31">
+      <span class="wordmark">Aqua<span class="cyan">Sync</span></span>
+    </a>
+    <a class="nav-cta" href="/app/">Get the app</a>
+  </div>
+</nav>
+
+<main>
+  <header class="intro">
+    <div class="wrap">
+      <p class="tagline">Companion app</p>
+      <h1>Explore the <span class="cyan">app</span></h1>
+      <p class="lede">The AquaSync app gets your vest ready before you get in and shows you what it told you after you're out. Bluetooth doesn't reach through water, so everything loads before the dive. Try it below.</p>
+      <div class="actions">
+        <a class="btn btn-solid" href="/app/">Get the app</a>
+        <a class="btn btn-ghost" href="#install">How to install</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="tour" aria-label="App tour">
+    <div class="wrap tour-grid">
+      <div class="device">
+        <iframe id="appFrame" src="/app/index.html#home" title="AquaSync app preview" loading="lazy"></iframe>
+      </div>
+      <div>
+        <ol class="screens" id="screens">
+          <li><button type="button" data-view="home" aria-pressed="true"><span class="n">01</span><h3>Home</h3><p>Your vest's battery, storage and haptic points at a glance, with a pre-dive checklist.</p></button></li>
+          <li><button type="button" data-view="pair" aria-pressed="false"><span class="n">02</span><h3>Pair your vest</h3><p>Hold the controller button and connect over Bluetooth on the surface.</p></button></li>
+          <li><button type="button" data-view="haptics" aria-pressed="false"><span class="n">03</span><h3>Zone check</h3><p>The app pulses each of the eight points in turn. You confirm you felt it, so you know every motor works before you descend.</p></button></li>
+          <li><button type="button" data-view="plan" aria-pressed="false"><span class="n">04</span><h3>Plan &amp; load</h3><p>Set max depth, bottom time, low-air and ascent alerts, then choose the music and cues to load onto the vest.</p></button></li>
+          <li><button type="button" data-view="replay" aria-pressed="false"><span class="n">05</span><h3>Dive replay</h3><p>Your depth profile with every cue the vest gave you, where it happened and how you responded.</p></button></li>
+          <li><button type="button" data-view="log" aria-pressed="false"><span class="n">06</span><h3>Dive log</h3><p>Every dive in one place, with urgent alerts flagged so you can review them.</p></button></li>
+        </ol>
+        <p class="tour-hint">Pick a screen to jump to it, or tap around inside the phone. The preview uses example dives and isn't connected to a vest.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="points">
+    <div class="wrap">
+      <h2>The eight <span class="cyan">haptic points</span></h2>
+      <p style="margin-top:1.2rem">The app's zone check uses the same eight points as the AquaSync vest: six on the front and two at the back of the shoulders.</p>
+      <div class="points-grid">
+        <div>
+          <div class="vest"><img src="/app/vest.webp" alt="AquaSync V1 prototype vest, front and back, with eight numbered haptic points" width="960" height="578"></div>
+          <div class="vest-labels"><span>Front</span><span>Back</span></div>
+        </div>
+        <div>
+          <ol class="pt-list">
+            <li><b>1</b>Right shoulder</li>
+            <li><b>2</b>Left shoulder</li>
+            <li><b>3</b>Right ribs</li>
+            <li><b>4</b>Left ribs</li>
+            <li><b>5</b>Right lower torso</li>
+            <li><b>6</b>Left lower torso</li>
+            <li><b>7</b>Back left shoulder</li>
+            <li><b>8</b>Back right shoulder</li>
+          </ol>
+          <div class="signals">
+            <p><strong>Left / right:</strong> points 2, 4, 6 or 1, 3, 5 along one side.</p>
+            <p><strong>All good:</strong> two light taps on 1 and 2.</p>
+            <p><strong>Attention:</strong> every point, longer and stronger.</p>
+            <p><strong>Ascent:</strong> pulses rising from 5–6 to 3–4 to 1–2.</p>
+            <p><strong>Low air:</strong> slow, deep pulses on 7 and 8.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="install" id="install">
+    <div class="wrap">
+      <h2>Get the <span class="cyan">app</span></h2>
+      <p style="margin-top:1.2rem">Open the app on your phone, then add it to your home screen. It opens full screen and works offline after the first visit.</p>
+      <div class="steps">
+        <div class="step"><h3>iPhone</h3><p>Open theaquasync.com/app in Safari, tap the Share button, then Add to Home Screen.</p></div>
+        <div class="step"><h3>Android</h3><p>Open theaquasync.com/app in Chrome, tap the ⋮ menu, then Install app.</p></div>
+      </div>
+      <div class="actions"><a class="btn btn-solid" href="/app/">Open the app</a><a class="btn btn-ghost" href="/">Back to AquaSync</a></div>
+      <p class="note">Early preview. Live connection to the vest is still in development.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; 2026 AquaSync&trade;. Patent pending.</span>
+    <span>Feel the unseen.</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var frame = document.getElementById('appFrame');
+  var buttons = document.querySelectorAll('#screens button');
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      buttons.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      try { frame.contentWindow.location.hash = b.dataset.view; }
+      catch (e) { frame.src = '/app/index.html#' + b.dataset.view; }
+      if (window.matchMedia('(max-width: 860px)').matches) frame.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  });
+})();
+</script>
+</body>
+</html>

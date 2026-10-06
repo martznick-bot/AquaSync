@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>AquaSync Companion</title>
-<meta name="description" content="Companion app for the AquaSync haptic dive suit.">
-<meta name="theme-color" content="#070a16">
+<meta name="description" content="Companion app for the AquaSync haptic dive vest.">
+<meta name="theme-color" content="#02070D">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -15,16 +15,16 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@300;400;500&family=Lexend:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Michroma&family=Sora:wght@300;400;500;600&display=swap">
 <style>
 /* Layout: a single phone-sized app column; on wide screens it sits in a device frame, on phones it fills the screen. Matches theaquasync.com: deep navy, blue accent, wide caps headings, pill buttons. Single dark theme like the site. */
 :root{
-  --bg:#070a16; --surface:#0d1528; --surface-2:#132039; --line:#1f2c47;
-  --fg:#eef2f8; --muted:#9ca8bf; --accent:#5aa8f0; --ink:#04122a; --blue:#5aa8f0;
+  --bg:#02070D; --surface:#07182c; --surface-2:#0b2340; --line:#1a3150;
+  --fg:#E8F5FF; --muted:#a9bccb; --accent:#1FB6FF; --ink:#02070D; --blue:#1FB6FF;
   --ok:#5fd68a; --warn:#f2c94c; --crit:#ff5f5f;
-  --display:"Lexend Exa","Lexend",system-ui,sans-serif;
-  --body:"Lexend",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --mono:"Lexend",system-ui,sans-serif;
+  --display:"Michroma","Eurostile","Arial Black",sans-serif;
+  --body:"Sora",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Sora",system-ui,sans-serif;
   color-scheme:dark;
 }
 html,body{height:100%;margin:0}
@@ -33,14 +33,14 @@ html{height:100dvh}
 @media (display-mode: standalone){body{background:var(--bg)}.phone{max-width:none;max-height:none;border:0!important;border-radius:0!important;box-shadow:none!important;height:100%!important}}
 body{background:#03050b;color:var(--fg);font:15px/1.45 var(--body);display:flex;justify-content:center;align-items:center}
 *{box-sizing:border-box}
-.phone{width:100%;max-width:400px;height:100%;max-height:860px;background:linear-gradient(180deg,#070a16 0%,#0a1630 55%,#070a16 100%);display:flex;flex-direction:column;overflow:hidden;position:relative}
+.phone{width:100%;max-width:400px;height:100%;max-height:860px;background:linear-gradient(180deg,#02070D 0%,#072340 55%,#02070D 100%);display:flex;flex-direction:column;overflow:hidden;position:relative}
 @media (min-width:500px) and (min-height:760px){.phone{border-radius:40px;border:10px solid #10232c;box-shadow:0 30px 80px rgba(0,0,0,.5);height:860px}}
 .screen{flex:1;overflow-y:auto;padding:20px 18px 18px;display:flex;flex-direction:column;gap:16px}
-h1{margin:0;font:300 1.65rem/1.15 var(--display);letter-spacing:.08em;text-transform:uppercase;text-wrap:balance}
-.brand{font:400 1.15rem/1 var(--display);letter-spacing:.32em;text-transform:uppercase}
+h1{margin:0;font:400 1.4rem/1.25 var(--display);letter-spacing:.06em;text-transform:uppercase;text-wrap:balance}
+.brand{font:400 1rem/1 var(--display);letter-spacing:.3em;text-transform:uppercase}
 .brand{color:#d6dce4}
 .brand span{color:var(--accent)}
-.eyebrow{font:400 .68rem var(--display);letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+.eyebrow{font:400 .6rem var(--display);letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
 .lede{margin:0;color:var(--muted);font-size:.92rem}
 .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
@@ -56,7 +56,7 @@ h1{margin:0;font:300 1.65rem/1.15 var(--display);letter-spacing:.08em;text-trans
 .pill .d{width:7px;height:7px;border-radius:50%;background:currentColor}
 button{font:inherit;color:inherit;cursor:pointer}
 button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.cta{height:56px;border:0;border-radius:999px;background:var(--accent);color:var(--ink);font:600 1.05rem var(--body);width:100%;box-shadow:0 0 24px rgba(90,168,240,.35)}
+.cta{height:56px;border:0;border-radius:999px;background:var(--accent);color:var(--ink);font:600 1.05rem var(--body);width:100%;box-shadow:0 0 24px rgba(31,182,255,.35)}
 .cta.ghost{background:none;border:2px solid var(--accent);color:var(--fg);box-shadow:none}
 .cta.ok{background:var(--ok);box-shadow:0 0 24px rgba(95,214,138,.3)}
 .back{background:none;border:0;color:var(--muted);min-height:44px;padding:0;font-size:.95rem;align-self:flex-start}
@@ -82,16 +82,15 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .seg button[aria-pressed="true"],.chip[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--surface-2)}
 .chip{height:36px;border-radius:999px;padding:0 14px;font-size:.85rem}
 .chip[aria-pressed="true"]{background:var(--accent);color:var(--ink)}
-.halo{position:relative;width:300px;height:300px;max-width:100%;align-self:center;border-radius:50%;background:radial-gradient(circle,#123a66,rgba(7,10,22,0) 72%)}
-.halo .ring{position:absolute;inset:50px;border-radius:50%;border:1px dashed var(--line)}
-.halo .head{position:absolute;left:134px;top:92px;width:32px;height:32px;border-radius:50%;background:var(--surface-2);border:1.5px solid var(--muted)}
-.halo .torso{position:absolute;left:96px;top:124px;width:108px;height:58px;border-radius:50%;background:var(--surface-2);border:1.5px solid var(--muted);display:flex;align-items:center;justify-content:center;font:500 9px var(--mono);letter-spacing:.1em;color:var(--muted)}
-.zone{position:absolute;width:52px;height:52px;border-radius:50%;border:2px solid var(--muted);background:var(--surface);font:600 .8rem var(--mono)}
-.zone.felt{background:var(--ok);color:var(--ink);border-color:transparent}
-.zone.missed{background:var(--crit);color:var(--ink);border-color:transparent}
-.zone.sel{border:3px solid var(--fg)}
+.vest{position:relative;width:100%;aspect-ratio:960/578;max-width:100%}
+.vest img{width:100%;height:100%;display:block;filter:drop-shadow(0 12px 30px rgba(0,0,0,.45))}
+.vest-labels{display:grid;grid-template-columns:1fr 1fr;text-align:center;font:400 .55rem var(--display);letter-spacing:.25em;text-transform:uppercase;color:var(--muted)}
+.zone{position:absolute;width:40px;height:40px;transform:translate(-50%,-50%);border-radius:50%;border:2px solid var(--fg);background:rgba(2,7,13,.75);color:var(--fg);font:600 .8rem var(--mono);padding:0}
+.zone.felt{background:var(--ok);color:var(--ink);border-color:var(--ok)}
+.zone.missed{background:var(--crit);color:var(--ink);border-color:var(--crit)}
+.zone.sel{box-shadow:0 0 0 3px var(--accent)}
 .zone.buzz{background:var(--accent);color:var(--ink);animation:buzz .6s ease-out infinite}
-@keyframes buzz{0%,100%{box-shadow:0 0 0 0 rgba(90,168,240,.7)}50%{box-shadow:0 0 0 14px rgba(90,168,240,0)}}
+@keyframes buzz{0%,100%{box-shadow:0 0 0 0 rgba(31,182,255,.7)}50%{box-shadow:0 0 0 14px rgba(31,182,255,0)}}
 @keyframes ring{0%{transform:scale(.6);opacity:.8}100%{transform:scale(1.6);opacity:0}}
 .radar{height:190px;display:flex;align-items:center;justify-content:center;position:relative}
 .radar .r{position:absolute;width:150px;height:150px;border-radius:50%;border:2px solid var(--accent);animation:ring 2.4s ease-out infinite}
@@ -128,6 +127,7 @@ nav.tabs button[aria-current="page"]{color:var(--accent)}
 <script>
 (function(){
 const LOGO='logo.png';
+const VEST='vest.webp';
 const ICON={
   home:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9H3z"/></svg>',
   plan:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3v14M6 11l6 6 6-6M4 21h16"/></svg>',
@@ -135,21 +135,24 @@ const ICON={
   log:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 4h14v16H5zM9 9h6M9 13h6M9 17h3"/></svg>',
   bt:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10-5 4V3l5 4L7 17"/></svg>'
 };
-const ZONES=[['F','Chest',0],['FR','Front right',45],['R','Right side',90],['BR','Back right',135],['B','Upper back',180],['BL','Back left',225],['L','Left side',270],['FL','Front left',315]];
-const MEDIA=[['music','Reef playlist','24 tracks · bone-conduction audio',1.2],['brief','Site briefing','Voice notes for this dive',0.1],['cues','Haptic cue pack','Direction, depth and air patterns',0.05],['map','Site map audio','Spoken waypoints',0.9]];
-const PLAN=[['depth','Max depth','Alert when you pass it','m',1,3,40],['time','Bottom time','Turn-around cue','min',5,10,90],['air','Low-air alert','Tank pressure','bar',10,30,100],['ascent','Ascent limit','Pulse if you rise faster','m/min',1,6,18]];
+const ZONES=[['1','Right shoulder','front',6.67,13.67],['2','Left shoulder','front',39.58,13.67],['3','Right ribs','front',11.98,53.46],['4','Left ribs','front',34.58,53.46],['5','Right lower torso','front',11.98,75.43],['6','Left lower torso','front',34.58,75.43],['7','Back left shoulder','back',62.6,12.46],['8','Back right shoulder','back',92.29,12.8]];
+const MEDIA=[['music','Reef playlist','24 tracks · bone-conduction audio',1.2],['brief','Site briefing','Voice notes for this dive',0.1],['cues','Haptic cue pack','Left, right, all good, attention, ascent, low air',0.05],['map','Site map audio','Spoken waypoints',0.9]];
+const PLAN=[['depth','Max depth','Alert when you pass it','m',1,3,40],['time','Bottom time','Turn-around cue','min',5,10,90],['air','Low-air alert','Slow pulses, back of both shoulders','bar',10,30,100],['ascent','Ascent limit','Attention pulse if you rise faster','m/min',1,6,18]];
 const EVENTS=[
-  [8.2,'08:12','Object on your left','1.8 m away · left-side zone pulsed for 6 s','warn'],
-  [22.5,'22:30','Half your air used','120 bar left · one tap on the chest','blue'],
-  [31.6,'31:40','Ascent too fast','14 m/min · all zones, urgent triple · you slowed in 5 s','crit'],
-  [36,'36:00','Safety stop started','Hold 3 min at 5 m · slow pulse on the back','blue'],
-  [39,'39:00','Safety stop done','Clear to surface · double pulse on the chest','blue']];
+  [8.2,'08:12','Object on your left','1.8 m away · left side pulsed (points 2, 4, 6) for 6 s','warn'],
+  [22.5,'22:30','Half your air used','120 bar left · two light taps on the front shoulders (1, 2)','blue'],
+  [31.6,'31:40','Ascent too fast','14 m/min · attention: every point, longer and stronger · you slowed in 5 s','crit'],
+  [33,'33:00','Pacing your ascent','Pulses rising from waist to shoulders (5–6, 3–4, 1–2)','blue'],
+  [39,'39:00','Safety stop done','3 min at 5 m · two light taps: all good, clear to surface','blue']];
 const PROFILE=[[0,0],[3,10],[6,16],[10,17.6],[14,16.4],[18,15],[22,14.6],[25,14],[30,12],[31.6,7.6],[33,6],[36,5],[39,5],[41,1],[42,0]];
 const DIVES=[['Oct','3','Morning reef','17.6',42,'200→70 bar',5,1],['Sep','27','Spring run','9.2',55,'200→90 bar',2,0],['Sep','20','Wreck, north side','21.4',38,'210→60 bar',6,2],['Sep','13','Pool session','3.8',30,'200→150 bar',0,0],['Sep','6','Training dive','12.0',40,'200→100 bar',1,0]];
 
 const S={screen:'home',paired:'AS-4F21',plan:{depth:18,time:45,air:50,ascent:9},planSet:false,media:{music:true,brief:true,cues:true,map:false},synced:false,
-  zoneSel:'R',level:1,asking:false,results:{F:'felt',FR:'felt',BR:'felt',B:'missed'},ev:2,filter:'all'};
-try{const saved=JSON.parse(localStorage.getItem('aquasync-state')||'null');if(saved&&typeof saved==='object')Object.assign(S,saved,{asking:false});}catch(e){}
+  zoneSel:'3',level:1,asking:false,results:{'1':'felt','2':'felt','7':'felt','4':'missed'},ev:2,filter:'all'};
+try{const saved=JSON.parse(localStorage.getItem('aquasync-state-v2')||'null');if(saved&&typeof saved==='object')Object.assign(S,saved,{asking:false});}catch(e){}
+const hashView=()=>{const h=location.hash.slice(1);if(h&&['home','pair','plan','haptics','replay','log'].includes(h)){S.screen=h;return true;}return false;};
+hashView();
+window.addEventListener('hashchange',()=>{if(hashView())render();});
 const app=document.getElementById('app');
 const go=s=>{S.screen=s;render();app.querySelector('.screen')?.scrollTo(0,0);};
 
@@ -161,12 +164,12 @@ function home(){
   const checks=[
     ['Haptic zone check',felt===8?'All 8 zones felt':`${felt} of 8 zones felt`,felt===8,'haptics'],
     ['Dive plan',S.planSet?`${S.plan.depth} m · ${S.plan.time} min · alert at ${S.plan.air} bar`:'Not set for this dive',S.planSet,'plan'],
-    ['Music & audio',S.synced?'Synced to suit':'Reef playlist loaded · 24 tracks',true,'plan'],
+    ['Music & audio',S.synced?'Synced to vest':'Reef playlist loaded · 24 tracks',true,'plan'],
     ['Battery','86% · about 5 h of dive time',true,'pair']];
   return `<div class="screen">
-    <div class="spread"><div class="row" style="gap:10px"><img src="${LOGO}" alt="" width="46" height="31" style="display:block"><div class="brand">Aqua<span>Sync</span></div></div><button class="round" data-go="pair" aria-label="Suit connection" style="color:var(--fg)">${ICON.bt}</button></div>
+    <div class="spread"><div class="row" style="gap:10px"><img src="${LOGO}" alt="" width="46" height="31" style="display:block"><div class="brand">Aqua<span>Sync</span></div></div><button class="round" data-go="pair" aria-label="Vest connection" style="color:var(--fg)">${ICON.bt}</button></div>
     <div class="card">
-      <div class="spread" style="align-items:flex-start"><div><div class="eyebrow">Your suit</div><div class="big" style="font-size:1.5rem">AquaSync V4 Wetsuit</div></div>
+      <div class="spread" style="align-items:flex-start"><div><div class="eyebrow">Your vest</div><div class="big" style="font-size:1.5rem">AquaSync V1 Vest</div></div>
       <span class="pill" style="color:var(--blue)"><span class="d"></span>Connected</span></div>
       <div class="grid3"><div class="tile"><small>Battery</small><b>86%</b></div><div class="tile"><small>Storage</small><b>3.1<i> / 8 GB</i></b></div><div class="tile"><small>Zones</small><b>8<i> / 8</i></b></div></div>
     </div>
@@ -177,13 +180,13 @@ function home(){
   </div>${tabs('home')}`;
 }
 function pair(){
-  const list=[['AquaSync V4 Wetsuit','AS-4F21','strong'],['AquaSync V3 Harness','AS-3B07','weak']];
+  const list=[['AquaSync V1 Vest','AS-4F21','strong'],['AquaSync test vest','AS-3B07','weak']];
   return `<div class="screen">
     <button class="back" data-go="home">‹ Home</button>
-    <h1>Pair your suit</h1>
-    <p class="lede">Hold the collar button for 3 seconds until the light pulses blue. Keep the phone within 2 m of the suit.</p>
+    <h1>Pair your vest</h1>
+    <p class="lede">Hold the controller button for 3 seconds until the light pulses blue. Keep the phone within 2 m of the vest.</p>
     <div class="radar"><span class="r"></span><span class="r"></span><span class="core"><img src="${LOGO}" alt="AquaSync" width="60" height="41"></span></div>
-    <div class="eyebrow">${S.paired?'Paired':'Suits nearby'}</div>
+    <div class="eyebrow">${S.paired?'Paired':'Vests nearby'}</div>
     ${list.map(([n,id,sig])=>{const on=S.paired===id;return `<div class="item" style="${on?'border-color:var(--accent)':''}"><span class="t"><b style="font-weight:600">${n}</b><span class="mono">${id} · signal ${sig}</span></span>
       <button data-pair="${id}" style="min-width:76px;height:44px;border-radius:10px;border:1px solid var(--accent);background:${on?'var(--accent)':'none'};color:${on?'var(--ink)':'var(--accent)'};font-weight:600">${on?'Paired':'Pair'}</button></div>`;}).join('')}
     ${S.paired?`<div class="grid3" style="grid-template-columns:1fr 1fr"><div class="tile"><small>Firmware</small><b style="font-size:.95rem">[VERSION]</b></div><div class="tile"><small>Haptic zones</small><b style="font-size:.95rem">8 detected</b></div></div>
@@ -199,11 +202,11 @@ function plan(){
       ${PLAN.map(([k,l,h,u])=>`<div class="stepper"><span class="t"><b style="font-weight:500;font-size:.92rem">${l}</b><span>${h}</span></span>
         <button class="round" data-step="${k}" data-d="-1" aria-label="Decrease ${l}">−</button><span class="val">${S.plan[k]}<i> ${u}</i></span><button class="round" data-step="${k}" data-d="1" aria-label="Increase ${l}">+</button></div>`).join('')}
     </div>
-    <div class="spread"><span class="eyebrow">Load onto suit</span><span class="mono" style="font-size:.75rem;color:var(--muted)">${used.toFixed(1)} of 8 GB</span></div>
+    <div class="spread"><span class="eyebrow">Load onto vest</span><span class="mono" style="font-size:.75rem;color:var(--muted)">${used.toFixed(1)} of 8 GB</span></div>
     <div class="meter"><i style="width:${Math.round(used/8*100)}%"></i></div>
     ${MEDIA.map(([k,n,d,gb])=>`<button class="item" data-media="${k}" aria-pressed="${!!S.media[k]}"><span class="box">${S.media[k]?'✓':''}</span><span class="t"><b>${n}</b><span>${d}</span></span><span class="mono" style="font-size:.75rem;color:var(--muted)">${gb>=0.1?gb.toFixed(1)+' GB':Math.round(gb*1000)+' MB'}</span></button>`).join('')}
   </div>
-  <div class="foot">${S.synced?`<button class="cta ok" data-go="haptics">Synced · Run zone check ›</button>`:`<button class="cta" data-act="sync">Sync to suit</button>`}<small>Bluetooth doesn't reach through water. Everything loads before you get in.</small></div>`;
+  <div class="foot">${S.synced?`<button class="cta ok" data-go="haptics">Synced · Run zone check ›</button>`:`<button class="cta" data-act="sync">Sync to vest</button>`}<small>Bluetooth doesn't reach through water. Everything loads before you get in.</small></div>`;
 }
 function haptics(){
   const felt=Object.values(S.results).filter(r=>r==='felt').length;
@@ -211,16 +214,17 @@ function haptics(){
   return `<div class="screen">
     <div class="spread"><button class="back" data-go="home">‹ Home</button><span class="mono" style="font-size:.8rem;color:var(--accent)">${felt} of 8 felt</span></div>
     <h1>Zone check</h1>
-    <p class="lede">Put the suit on. We pulse one zone at a time. Tell us if you felt it.</p>
-    <div class="halo"><div class="ring"></div><div class="head"></div><div class="torso">TOP VIEW</div>
-      ${ZONES.map(([id,n,deg])=>{const a=deg*Math.PI/180;const cls=[S.results[id]||'',id===S.zoneSel?'sel':'',id===S.zoneSel&&S.asking?'buzz':''].join(' ');
-        return `<button class="zone ${cls}" data-zone="${id}" aria-label="${n}" style="left:${Math.round(150+118*Math.sin(a)-26)}px;top:${Math.round(150-118*Math.cos(a)-26)}px">${id}</button>`;}).join('')}
+    <p class="lede">Put the vest on. We pulse one of the eight points at a time. Tell us if you felt it.</p>
+    <div class="vest"><img src="${VEST}" alt="AquaSync vest, front and back, with eight haptic points" width="960" height="578">
+      ${ZONES.map(([id,n,side,x,y])=>{const cls=[S.results[id]||'',id===S.zoneSel?'sel':'',id===S.zoneSel&&S.asking?'buzz':''].join(' ');
+        return `<button class="zone ${cls}" data-zone="${id}" aria-label="Point ${id}, ${n}" style="left:${x}%;top:${y}%">${id}</button>`;}).join('')}
     </div>
+    <div class="vest-labels"><span>Front</span><span>Back</span></div>
     <div class="legend"><span><i style="background:var(--ok)"></i>Felt</span><span><i style="background:var(--crit)"></i>Not felt</span><span><i style="border:1.5px solid var(--muted)"></i>Not tested</span></div>
     <div class="card">
-      <div class="spread"><span class="big" style="font-size:1.35rem">${sel[1]}</span><span class="mono" style="font-size:.75rem;color:var(--muted)">${sel[2]}° · ${r==='felt'?'felt':r==='missed'?'not felt':'not tested'}</span></div>
+      <div class="spread"><span class="big" style="font-size:1.2rem">${sel[0]} · ${sel[1]}</span><span class="mono" style="font-size:.75rem;color:var(--muted)">${sel[2]} · ${r==='felt'?'felt':r==='missed'?'not felt':'not tested'}</span></div>
       <div class="seg" role="group" aria-label="Strength">${['Low','Medium','High'].map((l,i)=>`<button data-level="${i}" aria-pressed="${S.level===i}">${l}</button>`).join('')}</div>
-      ${S.asking?`<div style="text-align:center">Did you feel it on your ${sel[1].toLowerCase()}?</div>
+      ${S.asking?`<div style="text-align:center">Did you feel point ${sel[0]} on your ${sel[1].toLowerCase()}?</div>
         <div class="grid3" style="grid-template-columns:1fr 1fr"><button data-ans="missed" style="height:52px;border-radius:12px;border:1px solid var(--crit);background:none;color:var(--crit);font-weight:600">Not felt</button><button data-ans="felt" style="height:52px;border-radius:12px;border:0;background:var(--ok);color:var(--ink);font-weight:600">Felt it</button></div>`
       :`<button class="cta" data-act="pulse">Pulse this zone</button>`}
     </div>
@@ -236,17 +240,17 @@ function replay(){
     <div><div class="eyebrow">Dive 14 · Saturday 8:40 am</div><h1>Morning reef</h1></div>
     <div class="grid4"><div class="tile"><small>Max depth</small><b style="font-size:.95rem">17.6 m</b></div><div class="tile"><small>Time</small><b style="font-size:.95rem">42 min</b></div><div class="tile"><small>Air</small><b style="font-size:.95rem">200→70</b></div><div class="tile"><small>Water</small><b style="font-size:.95rem">24 °C</b></div></div>
     <div class="chart"><svg viewBox="0 0 350 182" role="img" aria-label="Depth profile, deepest 17.6 metres">
-      ${[14,49,84,119,154].map((y,i)=>`<line x1="34" y1="${y}" x2="340" y2="${y}" stroke="#1f2c47" ${i?'stroke-dasharray="2 4"':''}/>`).join('')}
-      <text x="28" y="18" fill="#9ca8bf" font-family="Lexend,sans-serif" font-size="9" text-anchor="end">0</text>
-      <text x="28" y="88" fill="#9ca8bf" font-family="Lexend,sans-serif" font-size="9" text-anchor="end">10</text>
-      <text x="28" y="158" fill="#9ca8bf" font-family="Lexend,sans-serif" font-size="9" text-anchor="end">20 m</text>
-      <text x="34" y="174" fill="#9ca8bf" font-family="Lexend,sans-serif" font-size="9">0</text>
-      <text x="340" y="174" fill="#9ca8bf" font-family="Lexend,sans-serif" font-size="9" text-anchor="end">42 min</text>
-      <polygon points="${X(0)},${Y(0)} ${pts} ${X(42)},${Y(0)}" fill="#5aa8f0" fill-opacity=".12"/>
-      <polyline points="${pts}" fill="none" stroke="#5aa8f0" stroke-width="2" stroke-linejoin="round"/>
-      ${EVENTS.map((e,i)=>`<circle cx="${X(e[0]).toFixed(1)}" cy="${Y(depthAt(e[0])).toFixed(1)}" r="${i===S.ev?8:6}" fill="${({warn:'#f2c94c',crit:'#ff5f5f',blue:'#5aa8f0'})[e[4]]}" stroke="#070a16" stroke-width="2" data-ev="${i}" style="cursor:pointer"/>`).join('')}
+      ${[14,49,84,119,154].map((y,i)=>`<line x1="34" y1="${y}" x2="340" y2="${y}" stroke="#1a3150" ${i?'stroke-dasharray="2 4"':''}/>`).join('')}
+      <text x="28" y="18" fill="#a9bccb" font-family="Sora,sans-serif" font-size="9" text-anchor="end">0</text>
+      <text x="28" y="88" fill="#a9bccb" font-family="Sora,sans-serif" font-size="9" text-anchor="end">10</text>
+      <text x="28" y="158" fill="#a9bccb" font-family="Sora,sans-serif" font-size="9" text-anchor="end">20 m</text>
+      <text x="34" y="174" fill="#a9bccb" font-family="Sora,sans-serif" font-size="9">0</text>
+      <text x="340" y="174" fill="#a9bccb" font-family="Sora,sans-serif" font-size="9" text-anchor="end">42 min</text>
+      <polygon points="${X(0)},${Y(0)} ${pts} ${X(42)},${Y(0)}" fill="#1FB6FF" fill-opacity=".12"/>
+      <polyline points="${pts}" fill="none" stroke="#1FB6FF" stroke-width="2" stroke-linejoin="round"/>
+      ${EVENTS.map((e,i)=>`<circle cx="${X(e[0]).toFixed(1)}" cy="${Y(depthAt(e[0])).toFixed(1)}" r="${i===S.ev?8:6}" fill="${({warn:'#f2c94c',crit:'#ff5f5f',blue:'#1FB6FF'})[e[4]]}" stroke="#02070D" stroke-width="2" data-ev="${i}" style="cursor:pointer"/>`).join('')}
     </svg></div>
-    <div class="eyebrow">What the suit told you</div>
+    <div class="eyebrow">What the vest told you</div>
     ${EVENTS.map((e,i)=>`<button class="ev" data-ev="${i}" aria-pressed="${i===S.ev}" style="--sev:${col(e[4])}"><span class="at">${e[1]}</span><span class="bar"></span><span class="t"><b>${e[2]}</b><span>${e[3]}</span></span></button>`).join('')}
   </div>${tabs('log')}`;
 }
@@ -261,7 +265,7 @@ function log(){
   </div>${tabs('log')}`;
 }
 const VIEWS={home,pair,plan,haptics,replay,log};
-function render(){app.innerHTML=(VIEWS[S.screen]||home)();try{localStorage.setItem('aquasync-state',JSON.stringify(S));}catch(e){}}
+function render(){app.innerHTML=(VIEWS[S.screen]||home)();try{localStorage.setItem('aquasync-state-v2',JSON.stringify(S));}catch(e){}}
 
 app.addEventListener('click',e=>{
   const b=e.target.closest('[data-go],[data-pair],[data-step],[data-media],[data-act],[data-zone],[data-level],[data-ans],[data-ev],[data-filter]');
