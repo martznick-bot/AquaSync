@@ -357,6 +357,13 @@
   .ssd .go[hidden]{display:none}
   
   
+  /* VR gaming */
+  .gaming { background: linear-gradient(180deg, var(--navy), #0b0820 50%, var(--deep)); }
+  .gaming .eyebrow { font-family: var(--display); font-size: 0.72rem; letter-spacing: 0.38em; text-transform: uppercase; color: #b59cff; margin-bottom: 1rem; }
+  .gaming .losses h3 { color: var(--ice); }
+  .gaming .losses h3 .cyan { display: block; font-size: 0.7rem; letter-spacing: 0.24em; margin-top: 0.3rem; }
+  .gaming .carry { list-style: none; padding: 0; margin: 1.75rem 0 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .gaming .carry li { border: 1px solid var(--line); border-radius: 999px; padding: 0.4rem 0.95rem; font-size: 0.82rem; color: var(--soft); }
   </style>
 </head>
 <body>
@@ -373,6 +380,7 @@
       <li><a href="#progress">Progress</a></li>
       <li><a href="#roadmap">Roadmap</a></li>
       <li><a href="#summitsync">SummitSync</a></li>
+      <li><a href="#gaming">VR gaming</a></li>
       <li><a href="#app">App</a></li>
       <li><a class="contact-link" href="#contact">Contact</a></li>
     </ul>
@@ -539,6 +547,36 @@
     </div>
   </section>
 
+  <section class="gaming" id="gaming">
+    <div class="wrap summit-grid">
+      <div>
+        <p class="eyebrow">Beyond the water</p>
+        <h2>VR <span class="cyan">gaming</span></h2>
+        <p>The same vest, on dry land. Feel an explosion roll through your chest, footsteps creeping up behind you and a hit land on the exact side it came from. It's the AquaSync haptic language turned toward immersion.</p>
+        <p>The vest listens to your game's audio and turns it into touch, so it works with games you already play, with no special support needed from the game.</p>
+        <ul class="carry" aria-label="What carries over from AquaSync">
+          <li>Same vest</li><li>Same eight zones</li><li>Works from game audio</li><li>PC, console audio or VR</li>
+        </ul>
+        <p class="note">VR gaming is a concept. The AquaSync dive vest comes first. The audio-to-touch software has been tested on recorded game sounds, not yet on the finished vest.</p>
+      </div>
+      <ul class="losses">
+        <li><h3>Explosions<span class="cyan">Whole vest</span></h3><p>A deep rumble that hits your chest first and rolls through to your back, then fades.</p></li>
+        <li><h3>Direction<span class="cyan">Left, right, behind</span></h3><p>Gunfire, hits and footsteps land on the side of your body they came from, so you can react before you see it.</p></li>
+        <li><h3>Impacts<span class="cyan">Sharp bursts</span></h3><p>A quick, hard jolt where a hit lands, separate from the heavy rumble of explosions.</p></li>
+        <li><h3>Overhead<span class="cyan">Shoulders</span></h3><p>Rotors, jets and anything above you sweep across your shoulders.</p></li>
+        <li><h3>Any game<span class="cyan">Audio driven</span></h3><p>No game mods or partnerships needed to start. If the game makes the sound, the vest can feel it.</p></li>
+      </ul>
+    </div>
+    <div class="wrap ss-demo">
+      <div class="ss-demo-head">
+        <h3>Feel a match in <span class="cyan">60 seconds</span></h3>
+        <p>Press play with sound on. Footsteps, gunfire, an explosion, a hit and a helicopter, each one felt where it happens. Tap a moment to turn it off.</p>
+      </div>
+      <div id="game"></div>
+      <p class="fine">Sample match made for this demo. Headphones help you hear the left and right. On iPhone, turn off the silent switch.</p>
+    </div>
+  </section>
+
   <section class="app-promo" id="app">
     <div class="wrap app-grid">
       <div>
@@ -582,6 +620,7 @@
           <option value="Military / defense contractor">Military or defense contractor</option>
           <option value="Deaf / hard-of-hearing diver">Deaf or hard-of-hearing diver</option>
           <option value="Climber / mountaineer (SummitSync)">Climber or mountaineer (SummitSync)</option>
+          <option value="Gamer / VR (gaming vest)">Gamer or VR player (gaming vest)</option>
           <option value="Other">Other</option>
         </select>
         <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off">
@@ -826,5 +865,124 @@ function mountSummitVest(el){
 
 </script>
 <script>mountSummitDemo(document.getElementById("climb"),{});</script>
+<script>
+/* AquaSync gaming demo: 60 seconds of a game, felt on the vest. Reuses ssVestSVG() and the .ssd styles. */
+var GM_PAT={
+ steps:[[["bll"],130,240],[["blr"],130,240],[["bll"],130,240],[["blr"],130,240],[["bll"],130,240],[["blr"],130,300]],
+ left:[[["fsl","fcl","bul"],90,120],[["fsl","fcl","bul"],90,120],[["fsl","fcl","bul"],90,400]],
+ blast:[[["fsl","fsr","fcl","fcr"],420,0],[["fsl","fsr","fcl","fcr","bul","bur","bll","blr"],520,120],[["bul","bur","bll","blr"],380,200]],
+ right:[[["fsr","fcr"],160,90],[["fsr","fcr","bur"],320,420]],
+ heli:[[["bul","bur"],260,40],[["fsl","fsr"],260,120],[["bul","bur"],260,40],[["fsl","fsr"],260,120],[["bul","bur"],220,40],[["fsl","fsr"],220,300]]
+};
+function mountGameDemo(root){
+var LEN=60;
+var EV=[
+ {id:"steps",at:7,dur:6,c:"#7cc8ff",name:"Footsteps",zone:"Lower back",dir:"back",head:"Someone behind you",msg:"Footsteps closing in from behind"},
+ {id:"left",at:17,dur:6,c:"#ff8fb3",name:"Shots from the left",zone:"Left side",dir:"left",head:"Incoming, left",msg:"Gunfire from your left, quick bursts on the left side"},
+ {id:"blast",at:28,dur:7,c:"#f3b86b",name:"Explosion ahead",zone:"Whole vest",dir:"front",head:"Explosion ahead",msg:"Deep rumble in front, rolling through to your back"},
+ {id:"right",at:39,dur:6,c:"#b59cff",name:"Hit from the right",zone:"Right side",dir:"right",head:"Hit, right side",msg:"A sharp jolt where the hit landed"},
+ {id:"heli",at:50,dur:8,c:"#5fd3c0",name:"Helicopter overhead",zone:"Shoulders",dir:"top",head:"Overhead",msg:"Rotor thump sweeping back to front across your shoulders"}
+];
+var enabled={steps:true,left:true,blast:true,right:true,heli:true};
+root.classList.add("ssd");
+root.innerHTML=
+ '<div class="pl"><div class="scr"><canvas aria-hidden="true"></canvas>'+
+ '<div class="hud"><div><span>MATCH</span><b data-r="time">0:00</b></div><div><span>HEALTH</span><b data-r="hp">100</b></div><div><span>DIRECTION</span><b data-r="dir">—</b></div><div><span>INTENSITY</span><b data-r="int">0%</b></div></div>'+
+ '<button class="go" type="button"><span>&#9654; Play with sound</span></button></div>'+
+ '<div class="ctl"><div class="trk" role="slider" tabindex="0" aria-label="Match position" aria-valuemin="0" aria-valuemax="60"></div>'+
+ '<div class="row"><span class="clk">0:00 / 1:00</span><div class="bt"><button class="b" data-a="mute" type="button" aria-pressed="false">Sound on</button><button class="b" data-a="back" type="button">&minus;10s</button><button class="b p" data-a="play" type="button">Play</button></div></div></div></div>'+
+ '<div class="side"><div class="vest"><span class="lab">What you feel</span>'+ssVestSVG()+'</div>'+
+ '<span class="lab">Moments in this match · tap to turn off</span><ul class="ev"></ul></div>';
+var $=function(s){return root.querySelector(s)};
+var cv=$("canvas"),g=cv.getContext("2d"),scr=$(".scr"),trk=$(".trk"),clk=$(".clk"),list=$(".ev"),go=$(".go");
+var R={};root.querySelectorAll("[data-r]").forEach(function(n){R[n.dataset.r]=n});
+var t=0,playing=false,timer=null,fired={},muted=false,vt=0,last=0,timers=[],shake=0,flash=0,flashC="#fff";
+var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+function fmt(s){s=Math.max(0,Math.floor(s));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+function active(){for(var i=0;i<EV.length;i++){var e=EV[i];if(t>=e.at&&t<e.at+e.dur&&enabled[e.id])return e}return null}
+function hp(x){var h=100;if(x>=39&&enabled.right)h-=18;if(x>=28&&enabled.blast)h-=9;return h}
+var DIRS={back:"Behind",left:"Left",front:"Ahead",right:"Right",top:"Above"};
+
+/* sound */
+var A={ctx:null,master:null,
+ init:function(){if(this.ctx)return true;try{if(navigator.audioSession)navigator.audioSession.type="playback"}catch(e){}
+  var C=window.AudioContext||window.webkitAudioContext;if(!C)return false;var c=this.ctx=new C();
+  this.master=c.createGain();this.master.gain.value=0;this.master.connect(c.destination);
+  var len=c.sampleRate,buf=c.createBuffer(1,len,c.sampleRate),d=buf.getChannelData(0);for(var i=0;i<len;i++)d[i]=Math.random()*2-1;this.noise=buf;
+  var hum=c.createOscillator(),hg=c.createGain();hum.type="sawtooth";hum.frequency.value=55;var lp=c.createBiquadFilter();lp.type="lowpass";lp.frequency.value=180;hg.gain.value=.05;hum.connect(lp);lp.connect(hg);hg.connect(this.master);hum.start();return true},
+ level:function(v){if(!this.ctx)return;var n=this.ctx.currentTime;this.master.gain.cancelScheduledValues(n);this.master.gain.setTargetAtTime(muted?0:v,n,.12)},
+ burst:function(at,dur,f,q,vol,pan){var c=this.ctx,s=c.createBufferSource(),bf=c.createBiquadFilter(),gg=c.createGain(),p=c.createStereoPanner?c.createStereoPanner():null;
+  s.buffer=this.noise;bf.type="bandpass";bf.frequency.value=f;bf.Q.value=q;gg.gain.setValueAtTime(vol,at);gg.gain.exponentialRampToValueAtTime(.0001,at+dur);
+  s.connect(bf);bf.connect(gg);if(p){p.pan.value=pan||0;gg.connect(p);p.connect(this.master)}else gg.connect(this.master);s.start(at);s.stop(at+dur+.05)},
+ boom:function(at){var c=this.ctx,o=c.createOscillator(),gg=c.createGain();o.type="sine";o.frequency.setValueAtTime(90,at);o.frequency.exponentialRampToValueAtTime(30,at+1.4);
+  gg.gain.setValueAtTime(.9,at);gg.gain.exponentialRampToValueAtTime(.0001,at+1.6);o.connect(gg);gg.connect(this.master);o.start(at);o.stop(at+1.7);this.burst(at,1.3,220,.5,.7,0)},
+ buzz:function(at,dur,amp){if(!this.ctx||muted)return;var c=this.ctx,o=c.createOscillator(),gg=c.createGain(),lp=c.createBiquadFilter();o.type="square";o.frequency.value=165;lp.type="lowpass";lp.frequency.value=700;
+  gg.gain.setValueAtTime(.0001,at);gg.gain.linearRampToValueAtTime(.09*amp,at+.02);gg.gain.setValueAtTime(.09*amp,at+dur-.03);gg.gain.linearRampToValueAtTime(.0001,at+dur);o.connect(lp);lp.connect(gg);gg.connect(this.master);o.start(at);o.stop(at+dur+.02)},
+ sfx:function(id){if(!this.ctx||muted)return;var n=this.ctx.currentTime+.02,i;
+  if(id==="steps")for(i=0;i<6;i++)this.burst(n+i*.37,.12,140,1.2,.5,i%2?.3:-.3);
+  if(id==="left")for(i=0;i<3;i++)this.burst(n+i*.21,.18,1800,.7,.8,-.9);
+  if(id==="blast")this.boom(n);
+  if(id==="right"){this.burst(n,.25,600,.8,.9,.9);this.burst(n+.25,.4,240,.8,.5,.9)}
+  if(id==="heli")for(i=0;i<16;i++)this.burst(n+i*.15,.1,90,1,.6-i*.025,0)}
+};
+function clearTimers(){timers.forEach(clearTimeout);timers=[];root.querySelectorAll(".z.on").forEach(function(z){z.classList.remove("on")})}
+function playPat(id,color){var steps=GM_PAT[id],off=0,base=A.ctx?A.ctx.currentTime+.03:0,amp=id==="blast"?1.3:id==="steps"?.6:1;
+ steps.forEach(function(s){var zs=s[0],on=s[1],o=off;
+  timers.push(setTimeout(function(){zs.forEach(function(z){var el=root.querySelector('[data-z="'+z+'"]');if(el){el.style.setProperty("--zc",color);el.classList.add("on")}})},o));
+  timers.push(setTimeout(function(){zs.forEach(function(z){var el=root.querySelector('[data-z="'+z+'"]');if(el)el.classList.remove("on")})},o+on));
+  if(A.ctx)A.buzz(base+o/1000,on/1000,amp);off+=on+s[2]});
+ A.sfx(id);if(id==="blast"){shake=1;flash=1;flashC="255,190,120"}if(id==="right"){shake=.5;flash=.6;flashC="200,160,255"}if(id==="left"){flash=.35;flashC="255,140,180"}}
+function renderList(){var cur=active();
+ list.innerHTML=EV.map(function(e){return '<li'+(cur===e?' class="now"':'')+'><i style="background:'+e.c+'"></i><div class="w"><b>'+e.name+'</b><span>'+fmt(e.at)+' · '+e.zone+'</span></div><button class="tg" type="button" data-id="'+e.id+'" aria-pressed="'+enabled[e.id]+'" aria-label="'+e.name+'">'+(enabled[e.id]?"On":"Off")+'</button></li>'}).join("");
+ list.querySelectorAll(".tg").forEach(function(b){b.onclick=function(){enabled[b.dataset.id]=!enabled[b.dataset.id];renderAll()}})}
+function renderTrack(){trk.innerHTML='<div class="f" style="width:'+(t/LEN*100)+'%"></div>'+EV.map(function(e){return '<span class="m'+(enabled[e.id]?"":" off")+'" style="left:'+(e.at/LEN*100)+'%;background:'+e.c+'"></span>'}).join("");
+ trk.setAttribute("aria-valuenow",Math.floor(t));clk.textContent=fmt(t)+" / "+fmt(LEN);
+ var e=active();R.time.textContent=fmt(t);R.hp.textContent=hp(t);R.dir.textContent=e?DIRS[e.dir]:"—";R.int.textContent=(e?(e.id==="blast"?95:e.id==="steps"?35:70):0)+"%"}
+function renderOverlay(){var o=scr.querySelector(".al");if(o)o.remove();var e=active();if(!e)return;
+ scr.insertAdjacentHTML("beforeend",'<div class="al" style="--c:'+e.c+'" role="status"><i></i><div><b>'+e.head+'</b><span>'+e.msg+'</span></div></div>')}
+function renderAll(){renderTrack();renderOverlay();renderList()}
+function tick(){t+=1;if(t>LEN){t=LEN;setPlaying(false);renderAll();return}
+ EV.forEach(function(e){if(enabled[e.id]&&t===e.at&&!fired[e.id]){fired[e.id]=1;playPat(e.id,e.c)}});renderAll()}
+function setPlaying(p){if(p&&t>=LEN){t=0;fired={}}playing=p;$('[data-a="play"]').textContent=p?"Pause":"Play";go.hidden=true;clearInterval(timer);
+ if(p){if(A.init()){A.ctx.resume();A.level(.85)}timer=setInterval(tick,1000);if(reduce)requestAnimationFrame(draw)}else A.level(0)}
+function seek(x){t=Math.max(0,Math.min(LEN,x));fired={};clearTimers();renderAll()}
+go.onclick=function(){setPlaying(true)};
+$('[data-a="play"]').onclick=function(){setPlaying(!playing)};
+$('[data-a="back"]').onclick=function(){seek(t-10)};
+$('[data-a="mute"]').onclick=function(){muted=!muted;this.textContent=muted?"Sound off":"Sound on";this.setAttribute("aria-pressed",String(muted));if(playing){A.init();A.ctx.resume();A.level(.85)}};
+trk.onclick=function(e){var r=trk.getBoundingClientRect();seek(Math.round((e.clientX-r.left)/r.width*LEN))};
+trk.onkeydown=function(e){if(e.key==="ArrowRight")seek(t+5);else if(e.key==="ArrowLeft")seek(t-5);else return;e.preventDefault()};
+
+/* scene: neon arena, first person */
+function size(){var r=cv.getBoundingClientRect(),d=Math.min(2,window.devicePixelRatio||1);cv.width=Math.max(1,r.width*d);cv.height=Math.max(1,r.height*d)}
+var towers=[];for(var i=0;i<14;i++)towers.push([Math.random(),.08+Math.random()*.22,.03+Math.random()*.06]);
+function draw(ts){var dt=last?(ts-last)/1000:0;last=ts;if(playing)vt+=dt;var W=cv.width,H=cv.height,u=H/100;
+ shake*=.9;flash*=.9;var sx=(Math.random()-.5)*shake*3*u,sy=(Math.random()-.5)*shake*3*u;g.save();g.translate(sx,sy);
+ var sky=g.createLinearGradient(0,0,0,H*.55);sky.addColorStop(0,"#05060f");sky.addColorStop(1,"#1a1238");g.fillStyle=sky;g.fillRect(-10,-10,W+20,H+20);
+ var hz=H*.55;towers.forEach(function(tw){var x=((tw[0]+vt*.004)%1)*W,w=tw[2]*W,h=tw[1]*H;g.fillStyle="#0c0a1c";g.fillRect(x,hz-h,w,h);g.fillStyle="rgba(124,200,255,.35)";for(var y=hz-h+.02*H;y<hz-4;y+=.04*H)g.fillRect(x+w*.2,y,w*.15,.006*H)});
+ var fl=g.createLinearGradient(0,hz,0,H);fl.addColorStop(0,"#120c2a");fl.addColorStop(1,"#05040c");g.fillStyle=fl;g.fillRect(-10,hz,W+20,H);
+ g.strokeStyle="rgba(181,156,255,.35)";g.lineWidth=1;for(var i=-12;i<=12;i++){g.beginPath();g.moveTo(W/2+i*W*.02,hz);g.lineTo(W/2+i*W*.16,H);g.stroke()}
+ for(var k=0;k<10;k++){var p=((k+vt*1.2)%10)/10,y=hz+(H-hz)*p*p;g.globalAlpha=p;g.beginPath();g.moveTo(0,y);g.lineTo(W,y);g.stroke()}g.globalAlpha=1;
+ // crosshair
+ g.strokeStyle="rgba(234,241,248,.8)";g.lineWidth=.35*u;var cx=W/2,cy=H*.5;g.beginPath();g.moveTo(cx-3*u,cy);g.lineTo(cx-1*u,cy);g.moveTo(cx+1*u,cy);g.lineTo(cx+3*u,cy);g.moveTo(cx,cy-3*u);g.lineTo(cx,cy-1*u);g.moveTo(cx,cy+1*u);g.lineTo(cx,cy+3*u);g.stroke();
+ var e=active();
+ if(e){var pulse=.5+.5*Math.sin(ts/110),c=e.c;g.globalAlpha=.35+pulse*.5;var gr;
+  if(e.dir==="left"){gr=g.createLinearGradient(0,0,W*.25,0);gr.addColorStop(0,c);gr.addColorStop(1,"transparent");g.fillStyle=gr;g.fillRect(-10,-10,W*.25,H+20)}
+  if(e.dir==="right"){gr=g.createLinearGradient(W,0,W*.75,0);gr.addColorStop(0,c);gr.addColorStop(1,"transparent");g.fillStyle=gr;g.fillRect(W*.75,-10,W*.26,H+20)}
+  if(e.dir==="back"){gr=g.createLinearGradient(0,H,0,H*.72);gr.addColorStop(0,c);gr.addColorStop(1,"transparent");g.fillStyle=gr;g.fillRect(-10,H*.72,W+20,H*.3)}
+  if(e.dir==="top"){gr=g.createLinearGradient(0,0,0,H*.3);gr.addColorStop(0,c);gr.addColorStop(1,"transparent");g.fillStyle=gr;g.fillRect(-10,-10,W+20,H*.32)}
+  if(e.dir==="front"){var rg=g.createRadialGradient(cx,hz,0,cx,hz,W*.35*(1+(t-e.at)*.15));rg.addColorStop(0,"rgba(255,220,160,.95)");rg.addColorStop(.4,c);rg.addColorStop(1,"transparent");g.fillStyle=rg;g.fillRect(-10,-10,W+20,H+20)}
+  g.globalAlpha=1;
+  // radar
+  var rx=W-11*u,ry=H-26*u,rr=7*u;g.strokeStyle="rgba(234,241,248,.5)";g.lineWidth=.25*u;g.beginPath();g.arc(rx,ry,rr,0,7);g.stroke();
+  var ang={front:-Math.PI/2,back:Math.PI/2,left:Math.PI,right:0,top:-Math.PI/2}[e.dir];g.fillStyle=c;g.beginPath();g.arc(rx+Math.cos(ang)*rr*(e.dir==="top"?0:.75),ry+Math.sin(ang)*rr*(e.dir==="top"?0:.75),1.2*u+pulse*.6*u,0,7);g.fill();
+  g.fillStyle="#eaf1f8";g.beginPath();g.moveTo(rx,ry-1.2*u);g.lineTo(rx-.9*u,ry+.9*u);g.lineTo(rx+.9*u,ry+.9*u);g.fill()}
+ if(flash>.02){g.fillStyle="rgba("+flashC+","+flash*.5+")";g.fillRect(-10,-10,W+20,H+20)}
+ g.restore();if(!reduce||playing)requestAnimationFrame(draw)}
+size();window.addEventListener("resize",size);requestAnimationFrame(draw);renderAll();
+}
+mountGameDemo(document.getElementById("game"));
+</script>
+
 </body>
 </html>
