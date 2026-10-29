@@ -285,6 +285,20 @@
   .app-feats h3 { color: var(--cyan); margin: 0 0 0.4rem; }
   .app-feats p { margin: 0; font-size: 0.92rem; }
   @media (max-width: 820px) { .app-grid { grid-template-columns: 1fr; gap: 2rem; } }
+  /* SummitSync */
+  .summit { background: linear-gradient(180deg, var(--black), #0a1622 45%, var(--navy)); position: relative; overflow: hidden; }
+  .summit::before { content: ""; position: absolute; inset: auto 0 0 0; height: 55%; pointer-events: none; opacity: 0.5;
+    background: linear-gradient(160deg, transparent 48%, rgba(232,245,255,0.05) 48.2%, transparent 60%), linear-gradient(200deg, transparent 52%, rgba(232,245,255,0.04) 52.2%, transparent 66%); }
+  .summit .wrap { position: relative; }
+  .summit-grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: 3.5rem; align-items: start; }
+  .summit .eyebrow { font-family: var(--display); font-size: 0.72rem; letter-spacing: 0.38em; text-transform: uppercase; color: var(--cyan); margin-bottom: 1rem; }
+  .summit h2 { margin-bottom: 1.5rem; }
+  .summit .wordmark-s { font-family: var(--display); text-transform: uppercase; letter-spacing: 0.2em; }
+  .summit .carry { list-style: none; padding: 0; margin: 1.75rem 0 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .summit .carry li { border: 1px solid var(--line); border-radius: 999px; padding: 0.4rem 0.95rem; font-size: 0.82rem; color: var(--soft); }
+  .summit .losses h3 { color: var(--ice); }
+  .summit .losses h3 .cyan { display: block; font-size: 0.7rem; letter-spacing: 0.24em; margin-top: 0.3rem; }
+  @media (max-width: 860px) { .summit-grid { grid-template-columns: 1fr; gap: 2rem; } }
   </style>
 </head>
 <body>
@@ -300,6 +314,7 @@
       <li><a href="#language">How it works</a></li>
       <li><a href="#progress">Progress</a></li>
       <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#summitsync">SummitSync</a></li>
       <li><a href="#app">App</a></li>
       <li><a class="contact-link" href="#contact">Contact</a></li>
     </ul>
@@ -436,6 +451,28 @@
     </div>
   </section>
 
+  <section class="summit" id="summitsync">
+    <div class="wrap summit-grid">
+      <div>
+        <p class="eyebrow">Beyond the water</p>
+        <h2><span class="wordmark-s">Summit<span class="cyan">Sync</span></span></h2>
+        <p>The same haptic language, taken above the treeline. SummitSync is an AquaSync vest for climbers and alpine hikers, so you can feel which way to go in a whiteout, when you're climbing too fast and when it's time to turn around, without pulling off your gloves to check a screen.</p>
+        <p>It carries over the vest, the haptic zones, the controller and the companion app from the dive build, and swaps depth sensing for altitude, GPS and temperature.</p>
+        <ul class="carry" aria-label="What carries over from AquaSync">
+          <li>Same vest</li><li>Same haptic zones</li><li>Same companion app</li><li>Built for snow, not salt</li>
+        </ul>
+        <p class="note">SummitSync is a concept. The AquaSync dive vest comes first. SummitSync is a pacing and awareness aid, not a replacement for a map, compass, avalanche beacon or guide.</p>
+      </div>
+      <ul class="losses">
+        <li><h3>Route<span class="cyan">Steering</span></h3><p>Load a GPS track before the climb. A buzz on your left or right shoulder steers you back on route when fog or snow takes away the view.</p></li>
+        <li><h3>Pace<span class="cyan">Ascent rate</span></h3><p>A pattern you'll learn to recognize when you gain altitude faster than the daily limit you set, so you pace yourself for acclimatization.</p></li>
+        <li><h3>Turnaround<span class="cyan">Time to descend</span></h3><p>A strong, unmistakable pattern at the time you set to head down, summit or not.</p></li>
+        <li><h3>Rope team<span class="cyan">Partner awareness</span></h3><p>An alert when your partner's vest gets too far away or stops moving.</p></li>
+        <li><h3>Cold<span class="cyan">Layer temperature</span></h3><p>A chest pattern when the temperature inside your layers drops too low.</p></li>
+      </ul>
+    </div>
+  </section>
+
   <section class="app-promo" id="app">
     <div class="wrap app-grid">
       <div>
@@ -478,6 +515,7 @@
           <option value="Scientific / research diver">Scientific or research diver</option>
           <option value="Military / defense contractor">Military or defense contractor</option>
           <option value="Deaf / hard-of-hearing diver">Deaf or hard-of-hearing diver</option>
+          <option value="Climber / mountaineer (SummitSync)">Climber or mountaineer (SummitSync)</option>
           <option value="Other">Other</option>
         </select>
         <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off">
