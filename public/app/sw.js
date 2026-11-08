@@ -1,6 +1,6 @@
 // Martz & Co. app offline cache. Bump VERSION whenever you change any app file.
-const VERSION = 'martz-app-v8';
-const SHELL = ['index.html', 'manifest.webmanifest', 'logo.png', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'favicon-32.png', 'vest.webp', 'vest-summit.webp', 'vest-play.webp', 'martz-mark.svg'];
+const VERSION = 'martz-app-v9';
+const SHELL = ['index.html', 'manifest.webmanifest', 'logo.png', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'favicon-32.png', 'vest.webp', 'vest-summit.webp', 'vest-play.webp', 'martz-mark.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
