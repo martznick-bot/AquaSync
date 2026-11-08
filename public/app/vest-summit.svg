@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 578" width="960" height="578">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e4eaee"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#e4eaee"/></linearGradient></defs>
+<path d="M72,72 L17,460 L64,466 L90,168 Z" fill="#dfe6eb" stroke="#c3cdd5" stroke-width="2"/>
+<path d="M372,72 L427,460 L380,466 L354,168 Z" fill="#dfe6eb" stroke="#c3cdd5" stroke-width="2"/>
+<path d="M167,38 Q222,76 277,38 L372,72 L354,168 L350,540 Q222,562 94,540 L90,168 L72,72 Z" fill="url(#g)" stroke="#c3cdd5" stroke-width="2"/>
+<path d="M17,460 L64,466 L62,490 L15,484 Z" fill="#3fbf9f"/>
+<path d="M427,460 L380,466 L382,490 L429,484 Z" fill="#3fbf9f"/>
+<path d="M90,168 L94,540 L118,544 L114,168 Z" fill="#dfe6eb"/>
+<path d="M354,168 L350,540 L326,544 L330,168 Z" fill="#dfe6eb"/>
+<path d="M72,72 Q222,96 372,72" fill="none" stroke="#c3cdd5" stroke-width="1.5" stroke-dasharray="5 5"/>
+<path d="M167,38 Q222,76 277,38 L270,30 Q222,62 174,30 Z" fill="#3fbf9f"/>
+<path d="M222,60 L222,230" stroke="#3fbf9f" stroke-width="5" stroke-linecap="round"/>
+<rect x="216" y="226" width="12" height="20" rx="3" fill="#2b3a44"/>
+<path d="M265.8,163.2 L283.4,139.0 L292.2,150 L298.8,141.2 L316.4,163.2 Z" fill="#3fbf9f"/><path d="M283.4,139.0 L288.9,146.7 L280.1,145.6 Z" fill="#ffffff"/>
+<text x="290" y="186" text-anchor="middle" font-family="Michroma,Arial,sans-serif" font-size="13" letter-spacing="2" fill="#2b3a44">SUMMITSYNC</text>
+<path d="M94,470 Q222,492 350,470" fill="none" stroke="#3fbf9f" stroke-width="3"/>
+<path d="M594,72 L539,460 L586,466 L612,168 Z" fill="#dfe6eb" stroke="#c3cdd5" stroke-width="2"/>
+<path d="M894,72 L949,460 L902,466 L876,168 Z" fill="#dfe6eb" stroke="#c3cdd5" stroke-width="2"/>
+<path d="M689,38 Q744,76 799,38 L894,72 L876,168 L872,540 Q744,562 616,540 L612,168 L594,72 Z" fill="url(#g)" stroke="#c3cdd5" stroke-width="2"/>
+<path d="M539,460 L586,466 L584,490 L537,484 Z" fill="#3fbf9f"/>
+<path d="M949,460 L902,466 L904,490 L951,484 Z" fill="#3fbf9f"/>
+<path d="M612,168 L616,540 L640,544 L636,168 Z" fill="#dfe6eb"/>
+<path d="M876,168 L872,540 L848,544 L852,168 Z" fill="#dfe6eb"/>
+<path d="M594,72 Q744,96 894,72" fill="none" stroke="#c3cdd5" stroke-width="1.5" stroke-dasharray="5 5"/>
+<path d="M689,38 Q744,76 799,38 L792,30 Q744,62 696,30 Z" fill="#3fbf9f"/>
+<path d="M695.6,196.4 L730.8,148.0 L748.4,170 L761.6,152.4 L796.8,196.4 Z" fill="#3fbf9f"/><path d="M730.8,148.0 L741.8,163.4 L724.2,161.2 Z" fill="#ffffff"/>
+<text x="744" y="238" text-anchor="middle" font-family="Michroma,Arial,sans-serif" font-size="24" letter-spacing="4" fill="#2b3a44">SUMMITSYNC</text>
+<text x="744" y="266" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" letter-spacing="5" fill="#6b7a85">FEEL THE WAY UP</text>
+<path d="M616,470 Q744,492 872,470" fill="none" stroke="#3fbf9f" stroke-width="3"/>
+</svg>
