@@ -119,6 +119,7 @@ nav.tabs button[aria-current="page"]{color:var(--accent)}
 .foot{padding:12px 18px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:var(--surface);display:flex;flex-direction:column;gap:8px}
 .foot small{font-size:.72rem;color:var(--muted);text-align:center}
 .note{font-size:.72rem;color:var(--muted);text-align:center}
+.vest.sm .zone{width:30px;height:30px;font-size:.7rem}
 .zone.on{background:var(--pc,var(--accent));border-color:var(--pc,var(--accent));color:var(--ink);box-shadow:0 0 20px var(--pc,var(--accent))}
 .modebar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
 .modebar button{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:8px 8px;text-align:left;display:flex;flex-direction:column;gap:2px;min-width:0}
@@ -140,7 +141,10 @@ canvas.meterc{width:100%;height:64px;display:block;border-radius:10px;background
 (function(){
 const LOGO='logo.png';
 const VEST='vest.webp';
-const VESTS={aqua:['vest.webp','AquaSync dive vest'],summit:['vest-summit.svg','SummitSync white full-sleeve base layer'],play:['vest-play.svg','PlaySync short-sleeve mesh gaming shirt']};
+const VESTS={aqua:['vest.webp','AquaSync dive vest'],summit:['vest-summit.webp','SummitSync snow-white full-sleeve vest'],play:['vest-play.webp','PlaySync short-sleeve mesh vest']};
+// SummitSync and PlaySync images are the AquaSync render scaled to 70% to make room for sleeves; move the zone markers to match.
+const zp=(x,y)=>S.mode==='aqua'?[x,y]:[x<50?25+(x-25)*.7:75+(x-75)*.7,.7*(124/5.78+y)];
+const vcls=()=>S.mode==='aqua'?'vest':'vest sm';
 const vimg=()=>VESTS[S.mode]||VESTS.aqua;
 const ICON={
   home:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9H3z"/></svg>',
@@ -261,9 +265,9 @@ function haptics(){
     <div class="spread"><button class="back" data-go="home">‹ Home</button><span class="mono" style="font-size:.8rem;color:var(--accent)">${felt} of 8 felt</span></div>
     <h1>Zone check</h1>
     <p class="lede">Put the vest on. We pulse one of the eight points at a time. Tell us if you felt it.</p>
-    <div class="vest"><img src="${vimg()[0]}" alt="${vimg()[1]}, front and back, with eight haptic points" width="960" height="578">
+    <div class="${vcls()}"><img src="${vimg()[0]}" alt="${vimg()[1]}, front and back, with eight haptic points" width="960" height="578">
       ${ZONES.map(([id,n,side,x,y])=>{const cls=[S.results[id]||'',id===S.zoneSel?'sel':'',id===S.zoneSel&&S.asking?'buzz':''].join(' ');
-        return `<button class="zone ${cls}" data-zone="${id}" aria-label="Point ${id}, ${n}" style="left:${x}%;top:${y}%">${id}</button>`;}).join('')}
+        return `<button class="zone ${cls}" data-zone="${id}" aria-label="Point ${id}, ${n}" style="left:${zp(x,y)[0]}%;top:${zp(x,y)[1]}%">${id}</button>`;}).join('')}
     </div>
     <div class="vest-labels"><span>Front</span><span>Back</span></div>
     <div class="legend"><span><i style="background:var(--ok)"></i>Felt</span><span><i style="background:var(--crit)"></i>Not felt</span><span><i style="border:1.5px solid var(--muted)"></i>Not tested</span></div>
@@ -317,7 +321,7 @@ function modeBar(){return `<div class="modebar" role="group" aria-label="Mode">$
 function top(){return `<div class="spread"><div class="brand">Martz <span>&amp; Co.</span></div><button class="round" data-go="${S.mode==='aqua'?'pair':'settings'}" aria-label="Vest connection" style="color:var(--fg)">${ICON.bt}</button></div>${modeBar()}`;}
 function home(){fixMode();if(!avail(S.mode))return `<div class="screen">${top()}<p class="note">No modes are on. Add a vest or turn a mode on in Settings.</p><button class="cta" data-go="settings">Open settings</button></div>${tabs('home')}`;
   return S.mode==='summit'?summitHome():S.mode==='play'?playHome():aquaHome();}
-function vestFig(){return `<div class="vest"><img src="${vimg()[0]}" alt="${vimg()[1]}, front and back, with eight haptic points" width="960" height="578">${ZONES.map(([id,n,side,x,y])=>`<span class="zone" data-pz="${id}" aria-hidden="true" style="left:${x}%;top:${y}%;display:flex;align-items:center;justify-content:center">${id}</span>`).join('')}</div><div class="vest-labels"><span>Front</span><span>Back</span></div><p class="note" id="pmsg" aria-live="polite" style="margin:0">Tap a pattern to see which points fire</p>`;}
+function vestFig(){return `<div class="${vcls()}"><img src="${vimg()[0]}" alt="${vimg()[1]}, front and back, with eight haptic points" width="960" height="578">${ZONES.map(([id,n,side,x,y])=>`<span class="zone" data-pz="${id}" aria-hidden="true" style="left:${zp(x,y)[0]}%;top:${zp(x,y)[1]}%;display:flex;align-items:center;justify-content:center">${id}</span>`).join('')}</div><div class="vest-labels"><span>Front</span><span>Back</span></div><p class="note" id="pmsg" aria-live="polite" style="margin:0">Tap a pattern to see which points fire</p>`;}
 let pTimer=null,simIv=null,meterRaf=null,level=[];
 function stopAll(){clearInterval(simIv);simIv=null;clearTimeout(pTimer);if(meterRaf)cancelAnimationFrame(meterRaf);meterRaf=null;}
 function playPat(mode,id){const p=(PAT[mode]||[]).find(x=>x.id===id);if(!p)return;clearTimeout(pTimer);app.style.setProperty('--pc',MODES[mode][2]);
