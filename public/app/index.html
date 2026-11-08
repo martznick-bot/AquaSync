@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>AquaSync Companion</title>
-<meta name="description" content="Companion app for the AquaSync haptic dive vest.">
+<title>Martz &amp; Co.</title>
+<meta name="description" content="Companion app for Martz &amp; Co. haptic vests: AquaSync, SummitSync and PlaySync.">
 <meta name="theme-color" content="#02070D">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="AquaSync">
+<meta name="apple-mobile-web-app-title" content="Martz &amp; Co.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -119,6 +119,18 @@ nav.tabs button[aria-current="page"]{color:var(--accent)}
 .foot{padding:12px 18px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:var(--surface);display:flex;flex-direction:column;gap:8px}
 .foot small{font-size:.72rem;color:var(--muted);text-align:center}
 .note{font-size:.72rem;color:var(--muted);text-align:center}
+.zone.on{background:var(--pc,var(--accent));border-color:var(--pc,var(--accent));color:var(--ink);box-shadow:0 0 20px var(--pc,var(--accent))}
+.modebar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.modebar button{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:8px 8px;text-align:left;display:flex;flex-direction:column;gap:2px;min-width:0}
+.modebar button b{font:400 .56rem var(--display);letter-spacing:.08em;text-transform:uppercase}
+.modebar button span{font-size:.68rem;color:var(--muted)}
+.modebar button[aria-pressed="true"]{border-color:var(--mc);box-shadow:inset 0 0 0 1px var(--mc)}
+.modebar button[aria-pressed="true"] b{color:var(--mc)}
+.modebar button:disabled{opacity:.35;cursor:not-allowed}
+.item:disabled{opacity:.45;cursor:not-allowed}
+.tile.alert{outline:1px solid var(--warn)}
+.tile.alert b{color:var(--warn)}
+canvas.meterc{width:100%;height:64px;display:block;border-radius:10px;background:var(--surface-2)}
 </style>
 </head>
 <body>
@@ -133,6 +145,8 @@ const ICON={
   plan:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3v14M6 11l6 6 6-6M4 21h16"/></svg>',
   haptics:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M5 12a7 7 0 0 1 14 0M2 12a10 10 0 0 1 20 0"/></svg>',
   log:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 4h14v16H5zM9 9h6M9 13h6M9 17h3"/></svg>',
+  patterns:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l3-7 4 14 3-7h5"/></svg>',
+  settings:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>',
   bt:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10-5 4V3l5 4L7 17"/></svg>'
 };
 const ZONES=[['1','Right shoulder','front',6.67,13.67],['2','Left shoulder','front',39.58,13.67],['3','Right ribs','front',11.98,53.46],['4','Left ribs','front',34.58,53.46],['5','Right lower torso','front',11.98,75.43],['6','Left lower torso','front',34.58,75.43],['7','Back left shoulder','back',62.6,12.46],['8','Back right shoulder','back',92.29,12.8]];
@@ -147,19 +161,48 @@ const EVENTS=[
 const PROFILE=[[0,0],[3,10],[6,16],[10,17.6],[14,16.4],[18,15],[22,14.6],[25,14],[30,12],[31.6,7.6],[33,6],[36,5],[39,5],[41,1],[42,0]];
 const DIVES=[['Oct','3','Morning reef','17.6',42,'200→70 bar',5,1],['Sep','27','Spring run','9.2',55,'200→90 bar',2,0],['Sep','20','Wreck, north side','21.4',38,'210→60 bar',6,2],['Sep','13','Pool session','3.8',30,'200→150 bar',0,0],['Sep','6','Training dive','12.0',40,'200→100 bar',1,0]];
 
-const S={screen:'home',paired:'AS-4F21',plan:{depth:18,time:45,air:50,ascent:9},planSet:false,media:{music:true,brief:true,cues:true,map:false},synced:false,
+const MODES={aqua:['AquaSync','Dive','#1FB6FF'],summit:['SummitSync','Mountain','#3fbf9f'],play:['PlaySync','Game','#9b7bff']};
+const ALLZ=['1','2','3','4','5','6','7','8'];
+const rp=(a,n)=>Array.from({length:n},()=>a).flat();
+// Zones: 1 right shoulder, 2 left shoulder, 3 right ribs, 4 left ribs, 5 right lower, 6 left lower (front); 7 back left shoulder, 8 back right shoulder
+const PAT={
+ aqua:[
+  {id:'left',name:'Object on your left',what:'Left side pulses: points 2, 4, 6.',seq:rp([[['2','4','6'],220],[[],160]],3)},
+  {id:'half',name:'Half your air used',what:'Two light taps on the front shoulders.',seq:rp([[['1','2'],140],[[],160]],2)},
+  {id:'ascent',name:'Ascent too fast',what:'Every point, longer and stronger.',seq:rp([[ALLZ,500],[[],200]],3)},
+  {id:'pace',name:'Pacing your ascent',what:'Rises from waist to shoulders.',seq:rp([[['5','6'],150],[['3','4'],150],[['1','2'],150],[[],250]],3)},
+  {id:'air',name:'Low air',what:'Slow pulses on the back of both shoulders.',seq:rp([[['7','8'],500],[[],400]],3)},
+  {id:'good',name:'All good',what:'Two light taps: clear to surface.',seq:rp([[['1','2','7','8'],120],[[],180]],2)}],
+ summit:[
+  {id:'sleft',name:'Steer left',what:'Left shoulders: the route is to your left.',seq:rp([[['2','7'],200],[[],180]],3)},
+  {id:'sright',name:'Steer right',what:'Right shoulders: the route is to your right.',seq:rp([[['1','8'],200],[[],180]],3)},
+  {id:'fast',name:'Climbing too fast',what:'Ripples down from shoulders to waist. Ease the pace.',seq:rp([[['1','2'],140],[['3','4'],140],[['5','6'],140],[[],260]],3)},
+  {id:'turn',name:'Turnaround time',what:'Three long, strong buzzes on every point. Head down now.',seq:rp([[ALLZ,650],[[],300]],3)},
+  {id:'partner',name:'Partner too far',what:'Back shoulders alternate: your rope partner is out of range or stopped.',seq:rp([[['7'],220],[['8'],220]],4)},
+  {id:'cold',name:'Cold check',what:'Slow pulse on the ribs: it is getting too cold inside your layers.',seq:rp([[['3','4'],700],[[],500]],2)}],
+ play:[
+  {id:'boom',name:'Explosion',what:'Every point hits hard, then fades.',seq:[[ALLZ,450],[['1','2','3','4','5','6'],200],[['3','4','5','6'],180],[['5','6'],160]]},
+  {id:'hitl',name:'Hit from the left',what:'Short burst on the left side.',seq:[[['2','4','6'],180]]},
+  {id:'hitr',name:'Hit from the right',what:'Short burst on the right side.',seq:[[['1','3','5'],180]]},
+  {id:'hitb',name:'Hit from behind',what:'Burst on the back shoulders.',seq:[[['7','8'],220]]},
+  {id:'engine',name:'Engine rumble',what:'Steady low rumble for racing games.',seq:rp([[['5','6'],110],[[],60]],8)}]};
+const SPLAN=[['turn','Turnaround time','Strong pattern when it is time to head down','',15,600,1080],['gain','Daily gain limit','Pace alert past this much climbing','m',50,200,2000],['range','Rope partner range','Alert if your partner falls back','m',10,20,200]];
+const fmtH=m=>Math.floor(m/60)+':'+String(m%60).padStart(2,'0');
+
+const S={mode:'aqua',owned:{aqua:true,summit:true,play:true},on:{aqua:true,summit:true,play:true},splan:{turn:765,gain:500,range:60},game:{src:'pc',profile:'shooter',sens:60,front:true},
+  screen:'home',paired:'AS-4F21',plan:{depth:18,time:45,air:50,ascent:9},planSet:false,media:{music:true,brief:true,cues:true,map:false},synced:false,
   zoneSel:'3',level:1,asking:false,results:{'1':'felt','2':'felt','7':'felt','4':'missed'},ev:2,filter:'all'};
-try{const saved=JSON.parse(localStorage.getItem('aquasync-state-v2')||'null');if(saved&&typeof saved==='object')Object.assign(S,saved,{asking:false});}catch(e){}
-const hashView=()=>{const h=location.hash.slice(1);if(h&&['home','pair','plan','haptics','replay','log'].includes(h)){S.screen=h;return true;}return false;};
+try{const saved=JSON.parse(localStorage.getItem('martz-state-v1')||localStorage.getItem('aquasync-state-v2')||'null');if(saved&&typeof saved==='object'){['owned','on','splan','game'].forEach(k=>{if(saved[k])saved[k]=Object.assign({},S[k],saved[k]);});Object.assign(S,saved,{asking:false});}}catch(e){}
+const hashView=()=>{const h=location.hash.slice(1);if(h&&['home','pair','plan','haptics','replay','log','patterns','settings'].includes(h)){S.screen=h;return true;}return false;};
 hashView();
 window.addEventListener('hashchange',()=>{if(hashView())render();});
 const app=document.getElementById('app');
 const go=s=>{S.screen=s;render();app.querySelector('.screen')?.scrollTo(0,0);};
 
 function tabs(cur){
-  return `<nav class="tabs" aria-label="Main">${[['home','Home'],['plan','Plan'],['haptics','Haptics'],['log','Log']].map(([k,l])=>`<button data-go="${k}" ${cur===k?'aria-current="page"':''}>${ICON[k]}${l}</button>`).join('')}</nav>`;
+  return `<nav class="tabs" aria-label="Main">${[['home','Home'],['haptics','Zone check'],['patterns','Patterns'],['settings','Settings']].map(([k,l])=>`<button data-go="${k}" ${cur===k?'aria-current="page"':''}>${ICON[k]}${l}</button>`).join('')}</nav>`;
 }
-function home(){
+function aquaHome(){
   const felt=Object.values(S.results).filter(r=>r==='felt').length;
   const checks=[
     ['Haptic zone check',felt===8?'All 8 zones felt':`${felt} of 8 zones felt`,felt===8,'haptics'],
@@ -167,7 +210,7 @@ function home(){
     ['Music & audio',S.synced?'Synced to vest':'Reef playlist loaded · 24 tracks',true,'plan'],
     ['Battery','86% · about 5 h of dive time',true,'pair']];
   return `<div class="screen">
-    <div class="spread"><div class="row" style="gap:10px"><img src="${LOGO}" alt="" width="46" height="31" style="display:block"><div class="brand">Aqua<span>Sync</span></div></div><button class="round" data-go="pair" aria-label="Vest connection" style="color:var(--fg)">${ICON.bt}</button></div>
+    ${top()}
     <div class="card">
       <div class="spread" style="align-items:flex-start"><div><div class="eyebrow">Your vest</div><div class="big" style="font-size:1.5rem">AquaSync V1 Vest</div></div>
       <span class="pill" style="color:var(--blue)"><span class="d"></span>Connected</span></div>
@@ -177,6 +220,7 @@ function home(){
     ${checks.map(([l,d,ok,to])=>`<button class="item" data-go="${to}"><span class="check" style="color:var(--${ok?'ok':'warn'})">${ok?'✓':'!'}</span><span class="t"><b>${l}</b><span>${d}</span></span><span style="color:var(--muted)">›</span></button>`).join('')}
     <button class="cta" data-go="plan">Plan next dive</button>
     <button class="item" data-go="replay"><span class="t"><span>Last dive · Sat</span><b>Morning reef · 17.6 m · 42 min</b></span><span style="color:var(--accent);font-size:.85rem">Replay ›</span></button>
+    <button class="item" data-go="log"><span class="t"><b>Dive log</b><span>14 dives · 9 h 50 underwater</span></span><span style="color:var(--muted)">›</span></button>
   </div>${tabs('home')}`;
 }
 function pair(){
@@ -264,14 +308,118 @@ function log(){
     <p class="note">Example dives shown for this prototype.</p>
   </div>${tabs('log')}`;
 }
-const VIEWS={home,pair,plan,haptics,replay,log};
-function render(){app.innerHTML=(VIEWS[S.screen]||home)();try{localStorage.setItem('aquasync-state-v2',JSON.stringify(S));}catch(e){}}
+
+const avail=m=>!!(S.owned[m]&&S.on[m]);
+function fixMode(){if(!avail(S.mode)){const f=Object.keys(MODES).find(avail);if(f)S.mode=f;}}
+function modeBar(){return `<div class="modebar" role="group" aria-label="Mode">${Object.keys(MODES).map(m=>{const[n,sub,c]=MODES[m],ok=avail(m);return `<button data-mode="${m}" aria-pressed="${S.mode===m}" style="--mc:${c}" ${ok?'':'disabled'}><b>${n}</b><span>${ok?sub:(S.owned[m]?'Turned off':'No vest')}</span></button>`;}).join('')}</div>`;}
+function top(){return `<div class="spread"><div class="brand">Martz <span>&amp; Co.</span></div><button class="round" data-go="${S.mode==='aqua'?'pair':'settings'}" aria-label="Vest connection" style="color:var(--fg)">${ICON.bt}</button></div>${modeBar()}`;}
+function home(){fixMode();if(!avail(S.mode))return `<div class="screen">${top()}<p class="note">No modes are on. Add a vest or turn a mode on in Settings.</p><button class="cta" data-go="settings">Open settings</button></div>${tabs('home')}`;
+  return S.mode==='summit'?summitHome():S.mode==='play'?playHome():aquaHome();}
+function vestFig(){return `<div class="vest"><img src="${VEST}" alt="Vest, front and back, with eight haptic points" width="960" height="578">${ZONES.map(([id,n,side,x,y])=>`<span class="zone" data-pz="${id}" aria-hidden="true" style="left:${x}%;top:${y}%;display:flex;align-items:center;justify-content:center">${id}</span>`).join('')}</div><div class="vest-labels"><span>Front</span><span>Back</span></div><p class="note" id="pmsg" aria-live="polite" style="margin:0">Tap a pattern to see which points fire</p>`;}
+let pTimer=null,simIv=null,meterRaf=null,level=[];
+function stopAll(){clearInterval(simIv);simIv=null;clearTimeout(pTimer);if(meterRaf)cancelAnimationFrame(meterRaf);meterRaf=null;}
+function playPat(mode,id){const p=(PAT[mode]||[]).find(x=>x.id===id);if(!p)return;clearTimeout(pTimer);app.style.setProperty('--pc',MODES[mode][2]);
+  const msg=document.getElementById('pmsg');if(msg)msg.textContent=MODES[mode][0]+': '+p.name;
+  try{if(navigator.vibrate)navigator.vibrate(p.seq.map(x=>x[1]));}catch(e){}
+  let k=0;(function step(){const els=[...app.querySelectorAll('[data-pz]')];if(k>=p.seq.length){els.forEach(e=>e.classList.remove('on'));return;}const[z,ms]=p.seq[k++];els.forEach(e=>e.classList.toggle('on',z.includes(e.dataset.pz)));pTimer=setTimeout(step,ms);})();}
+const evEmpty=()=>'<p class="note" style="margin:0">Alerts during the demo show up here.</p>';
+function addEv(at,title,detail,sev){const box=document.getElementById('evs');if(!box)return;if(box.querySelector('.note'))box.innerHTML='';box.insertAdjacentHTML('afterbegin',`<div class="ev" style="--sev:var(--${sev})"><span class="at">${at}</span><span class="bar"></span><span class="t"><b>${title}</b><span>${detail}</span></span></div>`);}
+
+const sInit=()=>({t:0,alt:3200,gain:0,partner:20,temp:24});
+function sRead(st){const P=S.splan,left=P.turn-(600+st.t*3);const T=(k,v,u,al)=>`<div class="tile${al?' alert':''}"><small>${k}</small><b>${v}${u?`<i> ${u}</i>`:''}</b></div>`;
+  return T('Altitude',Math.round(st.alt).toLocaleString(),'m')+T('Gained today',Math.round(st.gain),'/ '+P.gain+' m',st.gain>P.gain)+T('Turnaround in',left<=0?'Now':Math.floor(left/60)+'h '+String(left%60).padStart(2,'0'),'',left<=0)+T('Partner',Math.round(st.partner),'m back',st.partner>P.range);}
+function summitHome(){const P=S.splan;
+  return `<div class="screen">${top()}
+    <div class="card"><div class="spread" style="align-items:flex-start"><div><div class="eyebrow">Your vest</div><div class="big" style="font-size:1.4rem">SummitSync Vest</div></div><span class="pill" style="color:var(--accent)"><span class="d"></span>${S.owned.aqua?'Outdoor module':'Connected'}</span></div>
+    <div class="grid3" id="sread" style="grid-template-columns:1fr 1fr">${sRead(sInit())}</div></div>
+    ${vestFig()}
+    <div class="eyebrow">Climb plan</div>
+    <div class="card" style="padding:4px 14px;gap:0">${SPLAN.map(([k,l,h,u])=>`<div class="stepper"><span class="t"><b style="font-weight:500;font-size:.92rem">${l}</b><span>${h}</span></span><button class="round" data-sstep="${k}" data-d="-1" aria-label="Decrease ${l}">−</button><span class="val">${k==='turn'?fmtH(P.turn):P[k]}<i> ${u}</i></span><button class="round" data-sstep="${k}" data-d="1" aria-label="Increase ${l}">+</button></div>`).join('')}</div>
+    <p class="lede" style="font-size:.8rem">Route: example GPX track loaded. Everything is set before the climb, so there is nothing to touch with gloves on.</p>
+    <button class="cta" data-act="climb" id="runbtn">Run 60-second climb</button>
+    <p class="note" style="margin:0">Starts at 10:00. Each second is 3 minutes on the mountain.</p>
+    <div id="evs" style="display:flex;flex-direction:column;gap:8px">${evEmpty()}</div>
+    <p class="note">SummitSync is a pacing and awareness aid. It doesn't replace a map, compass, avalanche beacon or guide.</p>
+  </div>${tabs('home')}`;}
+function startClimb(){stopAll();const P=S.splan,b=document.getElementById('runbtn');if(b){b.disabled=true;b.textContent='Climbing…';}const box=document.getElementById('evs');if(box)box.innerHTML=evEmpty();
+  const st=sInit(),fired={},stamp=()=>fmtH(600+st.t*3);
+  const ev=(k,id,title,detail,sev)=>{if(fired[k])return;fired[k]=1;addEv(stamp(),title,detail,sev);playPat('summit',id);};
+  simIv=setInterval(()=>{st.t++;const t=st.t,step=t>=18&&t<=26?18:8;st.alt+=step;st.gain+=step;
+    st.partner=t>=34&&t<=42?20+(t-33)*9:Math.max(20,st.partner-6);st.temp=t>=46?24-(t-45)*1.4:24;
+    if(t===6)ev('r','sright','Steer right','Off the route in fog · right shoulders pulsed','warn');
+    if(t===12)ev('l','sleft','Steer left','Drifting right of the track · left shoulders pulsed','warn');
+    if(t===20)ev('p','fast','Climbing too fast',(step*20)+' m an hour · ripple down from the shoulders','warn');
+    if(st.partner>P.range)ev('pt','partner','Partner too far',Math.round(st.partner)+' m back · back shoulders alternate','warn');
+    if(st.gain>P.gain)ev('g','fast','Daily gain limit passed',Math.round(st.gain)+' m today · ease the pace','warn');
+    if(st.temp<16)ev('c','cold','Cold check',st.temp.toFixed(0)+' °C inside your layers · slow pulse on the ribs','blue');
+    if(P.turn-(600+t*3)<=0)ev('tt','turn','Turnaround time','Head down now, summit or not · every point, three long buzzes','crit');
+    const r=document.getElementById('sread');if(r)r.innerHTML=sRead(st);
+    if(t>=60){clearInterval(simIv);simIv=null;if(b){b.disabled=false;b.textContent='Run 60-second climb';}}},1000);}
+
+function playHome(){const G=S.game;
+  return `<div class="screen">${top()}
+    <div class="card"><div class="spread" style="align-items:flex-start"><div><div class="eyebrow">Your vest</div><div class="big" style="font-size:1.4rem">PlaySync Vest</div></div><span class="pill" style="color:var(--accent)"><span class="d"></span>Play module</span></div>
+    <canvas class="meterc" id="meter" width="360" height="64" aria-label="Live game audio level"></canvas>
+    <div class="spread"><span class="lede" style="font-size:.8rem">Listening to ${G.src==='pc'?'Windows PC':'Mac (BlackHole)'}</span><span class="mono" style="font-size:.75rem;color:var(--muted)">Sensitivity ${G.sens}%</span></div></div>
+    ${vestFig()}
+    <div class="eyebrow">Try it</div>
+    <div class="grid3" style="grid-template-columns:1fr 1fr">${[['boom','Explosion'],['hitb','Hit from behind'],['hitl','Hit left'],['hitr','Hit right']].map(([id,l])=>`<button class="chip" style="height:44px;border-radius:12px" data-hit="${id}">${l}</button>`).join('')}</div>
+    <button class="cta" data-act="fight" id="runbtn">Play 30-second firefight</button>
+    <div id="evs" style="display:flex;flex-direction:column;gap:8px">${evEmpty()}</div>
+    <div class="eyebrow">Game audio</div>
+    <div class="card">
+      <div><small style="color:var(--muted)">Listening to</small><div class="seg" style="grid-template-columns:1fr 1fr;margin-top:6px">${[['pc','Windows PC'],['mac','Mac']].map(([k,l])=>`<button data-gsrc="${k}" aria-pressed="${G.src===k}">${l}</button>`).join('')}</div></div>
+      <div><small style="color:var(--muted)">Profile</small><div class="seg" style="margin-top:6px">${[['shooter','Shooter'],['racing','Racing'],['music','Music']].map(([k,l])=>`<button data-gprof="${k}" aria-pressed="${G.profile===k}">${l}</button>`).join('')}</div></div>
+      <div class="stepper" style="border:0"><span class="t"><b style="font-weight:500;font-size:.92rem">Sensitivity</b><span>How loud a sound must be to buzz</span></span><button class="round" data-gsens="-1" aria-label="Lower sensitivity">−</button><span class="val">${G.sens}<i> %</i></span><button class="round" data-gsens="1" aria-label="Raise sensitivity">+</button></div>
+      <button class="item" data-gfront="1" aria-pressed="${G.front}"><span class="box">${G.front?'✓':''}</span><span class="t"><b>Lower front-center sound</b><span>Your own gunfire buzzes you less</span></span></button>
+    </div>
+    <p class="note">Standalone Quest games run on the headset, so their sound never reaches your computer. Audio mode works with PC, PC VR and games whose sound you route to the computer.</p>
+  </div>${tabs('home')}`;}
+function startMeter(){const cv=document.getElementById('meter');if(!cv)return;if(meterRaf)cancelAnimationFrame(meterRaf);const ctx=cv.getContext('2d');if(level.length!==80)level=Array(80).fill(.1);let ph=0;
+  (function loop(){if(!document.body.contains(cv))return;ph+=.08;level.shift();level.push(.08+.07*Math.abs(Math.sin(ph*1.7))+Math.random()*.05);
+    const w=cv.width,h=cv.height,bw=w/level.length,g=S.game.sens/60;ctx.clearRect(0,0,w,h);
+    level.forEach((v,i)=>{const bh=Math.max(2,Math.min(h,v*h*g));ctx.fillStyle=v>.5?'#9b7bff':'#3d3470';ctx.fillRect(i*bw+1,h-bh,bw-2,bh);});
+    ctx.strokeStyle='rgba(242,201,76,.7)';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(0,h*.45);ctx.lineTo(w,h*.45);ctx.stroke();ctx.setLineDash([]);
+    meterRaf=requestAnimationFrame(loop);})();}
+function spike(v){if(!level.length)return;for(let j=0;j<6;j++){const i=level.length-1-j;level[i]=Math.max(level[i],v*(1-j/6));}}
+function startFight(){stopAll();startMeter();const b=document.getElementById('runbtn');if(b){b.disabled=true;b.textContent='Playing…';}const box=document.getElementById('evs');if(box)box.innerHTML=evEmpty();let t=0;
+  const script={2:['hitl','Gunfire from the left','Left side burst','warn'],5:['boom','Grenade 10 m ahead','Every point, then fades','crit'],9:['hitr','Hit from the right','Right side burst','warn'],13:['hitb','Hit from behind','Back shoulders','warn'],17:['boom','Vehicle explodes','Every point, then fades','crit'],21:['hitl','Hit from the left','Left side burst','warn'],24:['hitr','Return fire from the right','Right side burst','warn'],27:['boom','Airstrike','Every point, then fades','crit']};
+  simIv=setInterval(()=>{t++;const e=script[t];if(e){playPat('play',e[0]);spike(e[0]==='boom'?1:.75);addEv('0:'+String(t).padStart(2,'0'),e[1],e[2],e[3]);}
+    if(t>=30){clearInterval(simIv);simIv=null;if(b){b.disabled=false;b.textContent='Play 30-second firefight';}}},1000);}
+
+function patterns(){const ms=Object.keys(MODES).filter(avail);
+  return `<div class="screen"><h1>Alert patterns</h1><p class="lede">Each alert has its own feel. Tap one to see which points fire.</p>${vestFig()}
+    ${ms.length?ms.map(m=>`<div class="eyebrow" style="color:${MODES[m][2]}">${MODES[m][0]}</div>${PAT[m].map(p=>`<button class="item" data-pat="${m}:${p.id}"><span class="t"><b>${p.name}</b><span>${p.what}</span></span><span style="color:${MODES[m][2]};font-size:.85rem;font-weight:600">Play ›</span></button>`).join('')}`).join(''):'<p class="note">No modes are on. Turn one on in Settings.</p>'}
+  </div>${tabs('patterns')}`;}
+function settings(){
+  return `<div class="screen"><h1>Settings</h1><div class="eyebrow">My vests</div><p class="lede" style="font-size:.85rem">Turn on the vests you own. Turn a mode off to hide it from Home, even if you own the vest.</p>
+    ${Object.keys(MODES).map(m=>{const[n,,c]=MODES[m],own=!!S.owned[m],on=own&&S.on[m];return `<button class="item" data-own="${m}" aria-pressed="${own}" style="--accent:${c}"><span class="box">${own?'✓':''}</span><span class="t"><b>I own the ${n} vest</b><span>${m==='play'?'Uses the Play module':'Uses the Outdoor module'}</span></span></button>
+    <button class="item" data-on="${m}" aria-pressed="${on}" style="--accent:${c};margin-left:18px;width:calc(100% - 18px)" ${own?'':'disabled'}><span class="box">${on?'✓':''}</span><span class="t"><b>${n} mode</b><span>${own?(on?'On':'Off, hidden from Home'):'Add the vest first'}</span></span></button>`;}).join('')}
+    <button class="cta ghost" data-act="bundle">${S.owned.aqua&&S.owned.summit?'Outdoor bundle: dive and climbing vests added':'I have the Outdoor bundle'}</button>
+    <div class="eyebrow">Feel</div><div class="card"><small style="color:var(--muted)">Strength</small><div class="seg" role="group" aria-label="Strength">${['Low','Medium','High'].map((l,i)=>`<button data-level="${i}" aria-pressed="${S.level===i}">${l}</button>`).join('')}</div></div>
+    <p class="note">Prototype: example data until pairing ships with the first hardware. Martz &amp; Co. vests are awareness aids, not replacements for a dive computer, gauge, map, compass, avalanche beacon or guide.</p>
+  </div>${tabs('settings')}`;}
+const VIEWS={home,pair,plan,haptics,replay,log,patterns,settings};
+function render(){stopAll();fixMode();const aquaOnly=['pair','plan','replay','log'].includes(S.screen);app.style.setProperty('--accent',aquaOnly?'#1FB6FF':(MODES[S.mode]||MODES.aqua)[2]);app.innerHTML=(VIEWS[S.screen]||home)();try{localStorage.setItem('martz-state-v1',JSON.stringify(S));}catch(e){}if(S.screen==='home'&&S.mode==='play')startMeter();}
 
 app.addEventListener('click',e=>{
-  const b=e.target.closest('[data-go],[data-pair],[data-step],[data-media],[data-act],[data-zone],[data-level],[data-ans],[data-ev],[data-filter]');
+  const b=e.target.closest('[data-mode],[data-own],[data-on],[data-pat],[data-hit],[data-sstep],[data-gsrc],[data-gprof],[data-gsens],[data-gfront],[data-go],[data-pair],[data-step],[data-media],[data-act],[data-zone],[data-level],[data-ans],[data-ev],[data-filter]');
   if(!b) return; const d=b.dataset; const sc=app.querySelector('.screen'); const keep=sc?sc.scrollTop:0;
   if(d.go){go(d.go);return;}
-  if(d.pair){S.paired=d.pair;}
+  if(d.pat){const[m,id]=d.pat.split(':');playPat(m,id);return;}
+  if(d.hit){playPat('play',d.hit);spike(d.hit==='boom'?1:.75);return;}
+  if(d.act==='climb'){startClimb();return;}
+  if(d.act==='fight'){startFight();return;}
+  if(d.mode){S.mode=d.mode;}
+  else if(d.own){S.owned[d.own]=!S.owned[d.own];if(S.owned[d.own])S.on[d.own]=true;}
+  else if(d.on){S.on[d.on]=!S.on[d.on];}
+  else if(d.act==='bundle'){S.owned.aqua=S.owned.summit=true;S.on.aqua=S.on.summit=true;}
+  else if(d.sstep){const p=SPLAN.find(x=>x[0]===d.sstep);S.splan[d.sstep]=Math.min(p[6],Math.max(p[5],S.splan[d.sstep]+p[4]*(+d.d)));}
+  else if(d.gsrc){S.game.src=d.gsrc;}
+  else if(d.gprof){S.game.profile=d.gprof;}
+  else if(d.gsens){S.game.sens=Math.min(100,Math.max(10,S.game.sens+5*(+d.gsens)));}
+  else if(d.gfront){S.game.front=!S.game.front;}
+  else if(d.pair){S.paired=d.pair;}
   else if(d.step){const p=PLAN.find(x=>x[0]===d.step);S.plan[d.step]=Math.min(p[6],Math.max(p[5],S.plan[d.step]+p[4]*(+d.d)));S.planSet=true;S.synced=false;}
   else if(d.media){S.media[d.media]=!S.media[d.media];S.synced=false;}
   else if(d.act==='sync'){S.synced=true;S.planSet=true;}

@@ -1,5 +1,5 @@
-// AquaSync app offline cache. Bump VERSION whenever you change any app file.
-const VERSION = 'aquasync-app-v4';
+// Martz & Co. app offline cache. Bump VERSION whenever you change any app file.
+const VERSION = 'martz-app-v5';
 const SHELL = ['index.html', 'manifest.webmanifest', 'logo.png', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'favicon-32.png', 'vest.webp'];
 
 self.addEventListener('install', e => {

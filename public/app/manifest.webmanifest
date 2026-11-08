@@ -1,7 +1,7 @@
 {
-  "name": "AquaSync",
-  "short_name": "AquaSync",
-  "description": "Companion app for the AquaSync haptic dive vest.",
+  "name": "Martz & Co.",
+  "short_name": "Martz & Co.",
+  "description": "Companion app for Martz & Co. haptic vests: AquaSync, SummitSync and PlaySync.",
   "id": "/app/",
   "start_url": "/app/index.html",
   "scope": "/app/",
